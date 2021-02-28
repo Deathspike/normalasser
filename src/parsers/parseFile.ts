@@ -2,14 +2,19 @@ import * as app from '..';
 import * as path from 'path';
 
 export async function parseFileAsync(filePath: string, options?: IOptions) {
-  if (filePath.endsWith('.ass')) {
-    console.log(`Fetching ${filePath}`);
-    await app.parseSubAsync(filePath, options);
-    console.log(`Finished ${filePath}`);
-  } else if (filePath.endsWith('.mkv')) {
-    console.log(`Fetching ${filePath}`);
-    await extractSubtitles(filePath, options);
-    console.log(`Finished ${filePath}`);
+  try {
+    if (filePath.endsWith('.ass')) {
+      console.log(`Fetching ${filePath}`);
+      await app.parseSubAsync(filePath, options);
+      console.log(`Finished ${filePath}`);
+    } else if (filePath.endsWith('.mkv')) {
+      console.log(`Fetching ${filePath}`);
+      await extractSubtitles(filePath, options);
+      console.log(`Finished ${filePath}`);
+    }
+  } catch (error) {
+    console.log(`Rejected ${filePath}`);
+    console.log(error);
   }
 }
 

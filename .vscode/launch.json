@@ -1,7 +1,7 @@
 {
   "version": "0.2.0",
   "configurations": [{
-    "args": ["dist/app"],
+    "args": ["dist/app", "parse", "-l", "eng", "R:\\Media\\Anime Series\\Strike the Blood"],
     "name": "Launch Program",
     "outputCapture": "std",
     "preLaunchTask": "TypeScript",
