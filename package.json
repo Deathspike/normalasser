@@ -6,7 +6,7 @@
   "name": "normalize-ssa",
   "repository": "git://github.com/Deathspike/normalize-ssa",
   "types": "dist",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "keywords": [
     "ssa",
     "ass",
@@ -22,7 +22,7 @@
     "npm": ">= 6.0.0"
   },
   "dependencies": {
-    "ass-compiler": "0.1.1",
+    "ass-compiler": "0.1.2",
     "commander": "6.1.0",
     "fs-extra": "9.1.0",
     "node-fetch": "2.6.1"
