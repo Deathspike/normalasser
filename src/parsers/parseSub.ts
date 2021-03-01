@@ -44,7 +44,7 @@ function fetchPrimaryStyle(content: ass.ParsedASS) {
 
 function fetchValidStyle(content: ass.ParsedASS, styles: Array<string>) {
   let name = styles.shift();
-  while (name?.startsWith('OP') || name?.startsWith('Sign')) name = styles.shift();
+  while (name && /^OP|Opening|Sign/.test(name)) name = styles.shift();
   return content.styles.style.find(x => x.Name === name);
 }
 
