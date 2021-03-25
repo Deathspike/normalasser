@@ -6,7 +6,7 @@
   "name": "normalize-ssa",
   "repository": "git://github.com/Deathspike/normalize-ssa",
   "types": "dist",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "keywords": [
     "ssa",
     "ass",
