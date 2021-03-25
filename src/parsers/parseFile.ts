@@ -19,12 +19,12 @@ export async function parseFileAsync(filePath: string, options?: IOptions) {
 }
 
 async function extractSubtitles(filePath: string, options?: IOptions) {
-  const expression = /Stream #0:([0-9]+)\(([a-z]{3})\): Subtitle: ass/gm;
+  const expression = /Stream #0:([0-9]+)(?:\(([a-z]{3})\))?: Subtitle: ass/gm;
   const result = await app.ffmpegAsync(['-i', filePath]);
   let match: RegExpMatchArray | null;
   while (match = expression.exec(result)) {
     const id = match[1];
-    const language = match[2];
+    const language = match[2] ?? 'eng';
     if (!options || !options.language || options.language === language) {
       const subtitlePath = path.join(path.dirname(filePath), `${path.basename(filePath, path.extname(filePath))}.${language}.ass`);
       await app.ffmpegAsync(['-y', '-i', filePath, '-map', `0:${id}`, subtitlePath]);
