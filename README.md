@@ -1,6 +1,6 @@
 # normalize-ssa
 
-Extracts ssa/ass subtitle(s) from MKV videos and rescale/resize subtitles. This is a standalone derivative of the rescale/resize that occurs in [AnimeLoyalty](https://github.com/animeloyalty/animeloyalty). If you're using *AnimeLoyalty*, there's no need for this standalone tool. This is for all those locally stored files that you want to give the same rescale/resize in a different player.
+Extracts ssa/ass subtitle(s) from MKV videos and rescale/resize subtitles.
 
 # Prerequisites
 
@@ -64,17 +64,17 @@ To parse *subtitles* and rescale/resize, run:
 
     normalize-ssa parse /path/to/your/video.mkv
 
-Or to recursively find and parse `.ass`/`.mkv` files in a folder, run:
+Or to recursively find and parse `.ass`/`.mkv` files in a directory, run:
 
-    normalize-ssa parse /path/to/your/folder
+    normalize-ssa parse /path/to/your/directory
 
-To extract a single language from a `.mkv`, like `eng` for English, run:
+To extract a different language than *English* from a `.mkv`, like `ger` for *German*, run:
 
-    normalize-ssa parse -l eng /path/to/your/folder
+    normalize-ssa parse -l ger /path/to/your/fileOrDirectory
 
 And to select a different font size, run:
 
-    normalize-ssa parse -l eng -s large /path/to/your/folder
+    normalize-ssa parse -s large /path/to/your/fileOrDirectory
 
 The valid font sizes are `tiny`, `small`, `normal`, `large` or `huge`.
 

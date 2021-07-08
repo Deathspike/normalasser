@@ -19,16 +19,20 @@ export async function parseFileAsync(filePath: string, options?: IOptions) {
 }
 
 async function extractSubtitles(filePath: string, options?: IOptions) {
-  const expression = /Stream #0:([0-9]+)(?:\(([a-z]{3})\))?: Subtitle: ass/gm;
-  const result = await app.ffmpegAsync(['-i', filePath]);
-  let match: RegExpMatchArray | null;
-  while (match = expression.exec(result)) {
-    const id = match[1];
-    const language = match[2] ?? 'eng';
-    if (!options || !options.language || options.language === language) {
-      const subtitlePath = path.join(path.dirname(filePath), `${path.basename(filePath, path.extname(filePath))}.${language}.ass`);
-      await app.ffmpegAsync(['-y', '-i', filePath, '-map', `0:${id}`, subtitlePath]);
-      await app.parseSubtitleAsync(subtitlePath, options);
-    }
+  const languages = await fetchLanguages(filePath, options);
+  const subtitle = (options?.language && languages[options?.language]) ?? languages['eng'];
+  if (subtitle) {
+    const subtitlePath = path.join(path.dirname(filePath), `${path.basename(filePath, path.extname(filePath))}.${subtitle[2]}.ass`);
+    await app.ffmpegAsync(['-y', '-i', filePath, '-map', `0:${subtitle[1]}`, subtitlePath]);
+    await app.parseSubtitleAsync(subtitlePath, options);
   }
+}
+
+async function fetchLanguages(filePath: string, options?: IOptions) {
+  const data = await app.ffmpegAsync(['-i', filePath])
+  const expression = /Stream #0:([0-9]+)(?:\(([a-z]{3})\))?: Subtitle: ass/gm;
+  const result: Record<string, RegExpMatchArray> = {};
+  let match: RegExpMatchArray | null;
+  while (match = expression.exec(data)) result[match[2] ?? options?.language ?? 'eng'] = match;
+  return result;
 }
