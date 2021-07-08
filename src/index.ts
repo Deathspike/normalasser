@@ -1,5 +1,5 @@
 export * from './actions';
-export * from './parsers/parseDir';
+export * from './parsers/parseDirectory';
 export * from './parsers/parseFile';
-export * from './parsers/parseSub';
+export * from './parsers/parseSubtitle';
 export * from './utilities';

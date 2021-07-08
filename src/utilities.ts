@@ -16,8 +16,6 @@ function ffmpeg() {
   switch (process.platform) {
     case 'darwin':
       return path.join(__dirname, '../static/ffmpeg');
-    case 'linux':
-      return path.join(__dirname, '../static/ffmpeg');
     case 'win32':
       return path.join(__dirname, '../static/ffmpeg.exe');
     default:

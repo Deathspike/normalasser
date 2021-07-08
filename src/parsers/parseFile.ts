@@ -5,7 +5,7 @@ export async function parseFileAsync(filePath: string, options?: IOptions) {
   try {
     if (filePath.endsWith('.ass')) {
       console.log(`Fetching ${filePath}`);
-      await app.parseSubAsync(filePath, options);
+      await app.parseSubtitleAsync(filePath, options);
       console.log(`Finished ${filePath}`);
     } else if (filePath.endsWith('.mkv')) {
       console.log(`Fetching ${filePath}`);
@@ -28,7 +28,7 @@ async function extractSubtitles(filePath: string, options?: IOptions) {
     if (!options || !options.language || options.language === language) {
       const subtitlePath = path.join(path.dirname(filePath), `${path.basename(filePath, path.extname(filePath))}.${language}.ass`);
       await app.ffmpegAsync(['-y', '-i', filePath, '-map', `0:${id}`, subtitlePath]);
-      await app.parseSubAsync(subtitlePath, options);
+      await app.parseSubtitleAsync(subtitlePath, options);
     }
   }
 }

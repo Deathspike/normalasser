@@ -9,37 +9,38 @@ Extracts ssa/ass subtitle(s) from MKV videos and rescale/resize subtitles. This 
 
 # Install
 
-## Debian (Mint, Ubuntu, etc)
+## Windows
 
-1. Run in *Terminal*: `sudo apt-get install nodejs npm`
-2. Run in *Terminal*: `sudo npm install -g normalize-ssa`
+1. Install *NodeJS* following the instructions at http://nodejs.org/
+2. Run in *Command Prompt*: `npm install -g normalize-ssa`
 
 ## Mac OS X
 
 1. Install *NodeJS* following the instructions at http://nodejs.org/
 2. Run in *Terminal*: `npm install -g normalize-ssa`
 
-## Windows
+## Debian (Mint, Ubuntu, etc)
 
 1. Install *NodeJS* following the instructions at http://nodejs.org/
-2. Run in *Command Prompt*: `npm install -g normalize-ssa`
+2. Run in *Terminal*: `sudo apt-get install ffmpeg`
+3. Run in *Terminal*: `sudo npm install -g normalize-ssa`
 
 # Update
 
-## Debian (Mint, Ubuntu, etc)
+## Windows
 
 1. Ensure that `normalize-ssa` is [installed](#Install)
-2. Run in *Terminal*: `sudo npm install -g normalize-ssa`
+2. Run in *Command Prompt*: `npm install -g normalize-ssa`
 
 ## Mac OS X
 
 1. Ensure that `normalize-ssa` is [installed](#Install)
 2. Run in *Terminal*: `npm install -g normalize-ssa`
 
-## Windows
+## Debian (Mint, Ubuntu, etc)
 
 1. Ensure that `normalize-ssa` is [installed](#Install)
-2. Run in *Command Prompt*: `npm install -g normalize-ssa`
+2. Run in *Terminal*: `sudo npm install -g normalize-ssa`
 
 # Usage
 
