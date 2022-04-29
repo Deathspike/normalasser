@@ -4,20 +4,20 @@ import * as fs from 'fs-extra';
 export async function parseSubtitleAsync(filePath: string, options?: IOptions) {
   const text = await fs.readFile(filePath, 'utf8');
   const subtitle = ass.parse(text);
-  resize(subtitle, options);
+  changeScale(subtitle, options);
   await fs.writeFile(filePath, ass.stringify(subtitle));
 }
 
-function resize(subtitle: ass.ParsedASS, options?: IOptions) {
-  const primaryStyle = /^[0-9]+$/.test(subtitle.info.PlayResY)
+function changeScale(subtitle: ass.ParsedASS, options?: IOptions) {
+  const primaryStyle = /^\d+$/.test(subtitle.info.PlayResY)
     ? fetchPrimaryStyle(subtitle)
     : undefined;
-  if (primaryStyle && /^[0-9]+$/.test(primaryStyle.Fontsize)) {
+  if (primaryStyle && /^\d+$/.test(primaryStyle.Fontsize)) {
     const primaryFontSize = parseInt(primaryStyle.Fontsize, 10);
     const primaryMarginV = primaryStyle.MarginV;
     const scaleY = 1 / 360 * parseInt(subtitle.info.PlayResY, 10);
     for (const style of subtitle.styles.style) {
-      style.Fontsize = /^[0-9]+$/.test(style.Fontsize)
+      style.Fontsize = /^\d+$/.test(style.Fontsize)
         ? String(1 / primaryFontSize * parseInt(style.Fontsize, 10) * fetchFontSize(options) * scaleY)
         : style.Fontsize;
       style.MarginV = style.MarginV === primaryMarginV
@@ -37,7 +37,7 @@ function fetchFontSize(options?: IOptions) {
 }
 
 function fetchPrimaryStyle(content: ass.ParsedASS) {
-  const result = {} as Record<string, number>;
+  const result: Record<string, number> = {};
   content.events.dialogue.forEach(c => result[c.Style] = (result[c.Style] ?? 0) + c.End - c.Start);
   const name = Object.entries(result).sort((a, b) => b[1] - a[1]).shift()?.[0];
   return content.styles.style.find(x => x.Name === name);
