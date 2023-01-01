@@ -9,13 +9,11 @@ export async function parseSubtitleAsync(filePath: string, options?: IOptions) {
 }
 
 function changeScale(subtitle: ass.ParsedASS, options?: IOptions) {
-  const primaryStyle = /^\d+$/.test(subtitle.info.PlayResY)
-    ? fetchPrimaryStyle(subtitle)
-    : undefined;
+  const primaryStyle = fetchPrimaryStyle(subtitle);
   if (primaryStyle && /^\d+$/.test(primaryStyle.Fontsize)) {
     const primaryFontSize = parseInt(primaryStyle.Fontsize, 10);
     const primaryMarginV = primaryStyle.MarginV;
-    const scaleY = 1 / 360 * parseInt(subtitle.info.PlayResY, 10);
+    const scaleY = 1 / 360 * (parseInt(subtitle.info.PlayResY, 10) || 270);
     for (const style of subtitle.styles.style) {
       style.Fontsize = /^\d+$/.test(style.Fontsize)
         ? String(1 / primaryFontSize * parseInt(style.Fontsize, 10) * fetchFontSize(options) * scaleY)
