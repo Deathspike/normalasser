@@ -1,4 +1,4 @@
 #!/usr/bin/env node
-var path = require('path');
-var fs = require('fs');
-require(path.join(path.dirname(fs.realpathSync(__filename)), '..', 'dist/app'));
+const {join} = require('path');
+const {main} = require(join(__dirname, '..'));
+main().parse();

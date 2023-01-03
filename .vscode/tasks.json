@@ -1,12 +1,14 @@
 {
   "version": "2.0.0",
-  "tasks": [{
-    "group": {"isDefault": true, "kind": "build"},
-    "isBackground": true,
-    "label": "TypeScript",
-    "option": "watch",
-    "problemMatcher": ["$tsc-watch"],
-    "tsconfig": "tsconfig.json",
-    "type": "typescript"
-  }]
+  "tasks": [
+    {
+      "group": {"isDefault": true, "kind": "build"},
+      "isBackground": true,
+      "label": "TypeScript",
+      "option": "watch",
+      "problemMatcher": ["$tsc-watch"],
+      "tsconfig": "tsconfig.json",
+      "type": "typescript"
+    }
+  ]
 }

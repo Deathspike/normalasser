@@ -1,9 +1,10 @@
-const fetch = require('node-fetch');
-const fs = require('fs');
-const path = require('path');
-const zlib = require('zlib');
-let apiUrl = 'https://api.github.com/repos/Deathspike/animesync/contents/static/download/';
-let rawUrl = 'https://github.com/Deathspike/animesync/raw/master/static/download/';
+const fs = require('node:fs');
+const path = require('node:path');
+const zlib = require('node:zlib');
+let apiUrl =
+  'https://api.github.com/repos/Deathspike/animesync/contents/static/download/';
+let rawUrl =
+  'https://github.com/Deathspike/animesync/raw/master/static/download/';
 let staticPath = path.join(__dirname, 'static');
 
 async function checksumAsync(remotePath) {
@@ -13,18 +14,17 @@ async function checksumAsync(remotePath) {
 }
 
 async function downloadAsync(localPath, remotePath) {
-  return await new Promise((resolve, reject) => {
-    fetch(new URL(remotePath, rawUrl).toString()).then((res) => res.body
-      .pipe(zlib.createGunzip())
-      .pipe(fs.createWriteStream(localPath))
-      .on('error', reject)
-      .on('finish', resolve));
-  });
+  const response = await fetch(new URL(remotePath, rawUrl).toString());
+  const blob = await response.arrayBuffer();
+  await fs.promises.writeFile(localPath, zlib.gunzipSync(blob));
 }
 
 async function ffmpegAsync(localName, remotePath) {
   const hashPath = path.join(staticPath, `${localName}.cks`);
-  const localHash = await fs.promises.readFile(hashPath).then(String).catch(() => {});
+  const localHash = await fs.promises
+    .readFile(hashPath)
+    .then(String)
+    .catch(() => {});
   const remoteHash = await checksumAsync(remotePath);
   if (localHash !== remoteHash) {
     await fs.promises.mkdir(staticPath, {recursive: true});

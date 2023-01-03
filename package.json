@@ -1,41 +1,38 @@
 {
-  "author": "Roel van Uden",
+  "name": "normalize-ssa",
+  "author": "Deathspike",
   "description": "Extracts ssa/ass subtitle(s) from MKV videos and rescale/resize subtitles.",
   "license": "MIT",
-  "main": "dist",
-  "name": "normalize-ssa",
   "repository": "git://github.com/Deathspike/normalize-ssa",
+  "version": "2.0.0",
+  "main": "dist",
   "types": "dist",
-  "version": "1.1.4",
-  "keywords": [
-    "ssa",
-    "ass",
-    "normalize",
-    "resize",
-    "rescale"
-  ],
   "bin": {
     "normalize-ssa": "./bin/normalize-ssa"
   },
   "engines": {
-    "node": ">= 14.0.0",
-    "npm": ">= 6.0.0"
+    "node": ">= 18.0.0",
+    "npm": ">= 8.0.0"
   },
   "dependencies": {
     "ass-compiler": "0.1.4",
-    "commander": "6.1.0",
-    "fs-extra": "9.1.0",
-    "node-fetch": "2.6.1"
+    "commander": "9.4.1"
   },
   "devDependencies": {
-    "@types/fs-extra": "9.0.7",
-    "@types/node": "14.11.5",
+    "@types/node": "18.11.18",
+    "pre-commit": "1.2.2",
+    "prettier": "2.8.1",
     "rimraf": "3.0.2",
-    "typescript": "4.0.3"
+    "typescript": "4.9.4"
   },
   "scripts": {
-    "prepare": "rimraf dist && tsc",
+    "prepare": "npm run repository:prune && npm run repository:build",
+    "prettier:check": "prettier --check .",
+    "prettier:write": "prettier --write .",
+    "repository:build": "tsc",
+    "repository:prune": "rimraf build && rimraf dist",
     "postinstall": "node postinstall",
-    "start": "node ."
+    "start": "node .",
+    "test": "npm run prettier:check"
   }
 }

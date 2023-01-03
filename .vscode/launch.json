@@ -1,11 +1,14 @@
 {
   "version": "0.2.0",
-  "configurations": [{
-    "args": ["dist/app", "parse", "-l", "eng", "R:\\Media\\Anime Series\\Strike the Blood"],
-    "name": "Launch Program",
-    "outputCapture": "std",
-    "preLaunchTask": "TypeScript",
-    "request": "launch",
-    "type": "node"
-  }]
+  "configurations": [
+    {
+      "args": ["bin/normalize-ssa"],
+      "name": "Launch Program",
+      "outFiles": ["${workspaceFolder}/dist/**/*"],
+      "outputCapture": "std",
+      "preLaunchTask": "TypeScript",
+      "request": "launch",
+      "type": "node"
+    }
+  ]
 }
