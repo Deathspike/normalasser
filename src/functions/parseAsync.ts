@@ -4,7 +4,7 @@ import * as fs from 'node:fs';
 
 export async function parseAsync(filePath: string, options: app.Options) {
   const oldValue = await fs.promises.readFile(filePath, 'utf8');
-  const newValue = parse(oldValue, options);
+  const newValue = run(oldValue, options);
   if (newValue === oldValue) {
     return false;
   } else if (filePath.endsWith('.tmp')) {
@@ -18,7 +18,7 @@ export async function parseAsync(filePath: string, options: app.Options) {
   }
 }
 
-function parse(value: string, options: app.Options) {
+function run(value: string, options: app.Options) {
   const subtitle = ass.parse(value);
   app.subtitleScale(subtitle, options);
   return ass.stringify(subtitle);
