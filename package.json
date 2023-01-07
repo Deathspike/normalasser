@@ -31,7 +31,6 @@
     "prettier:write": "prettier --write .",
     "repository:build": "tsc",
     "repository:prune": "rimraf build && rimraf dist",
-    "postinstall": "node postinstall",
     "start": "node .",
     "test": "npm run prettier:check"
   }

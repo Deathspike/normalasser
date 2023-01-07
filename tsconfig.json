@@ -1,31 +1,8 @@
 {
+  "extends": "./tsconfig.strict.json",
   "compilerOptions": {
-    "alwaysStrict": true,
     "declaration": true,
-    "forceConsistentCasingInFileNames": true,
-    "lib": ["DOM", "ES2022"],
-    "module": "CommonJS",
-    "newLine": "lf",
-    "noImplicitAny": true,
-    "noImplicitThis": true,
-    "noImplicitOverride": true,
-    "noImplicitReturns": true,
-    "noFallthroughCasesInSwitch": true,
-    "noPropertyAccessFromIndexSignature": true,
-    "noUncheckedIndexedAccess": true,
-    "noUnusedLocals": true,
-    "noUnusedParameters": true,
     "outDir": "dist",
-    "skipDefaultLibCheck": true,
-    "skipLibCheck": true,
-    "sourceMap": true,
-    "strict": true,
-    "strictBindCallApply": true,
-    "strictFunctionTypes": true,
-    "strictNullChecks": true,
-    "strictPropertyInitialization": true,
-    "target": "ES2022",
-    "useDefineForClassFields": false,
-    "useUnknownInCatchVariables": true
+    "sourceMap": true
   }
 }
