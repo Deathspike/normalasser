@@ -9,13 +9,14 @@ export function main() {
 }
 
 function parse() {
-  const sizeOption = new commander.Option('-s, --size <s>', 'The font size')
+  const sizeOption = new commander.Option('--size <s>', 'The font size')
     .choices(['tiny', 'small', 'normal', 'large', 'huge'])
     .default('normal');
   return new commander.Command('parse')
     .arguments('<path...>')
     .description('Recursively parse subtitles')
-    .option('-l, --language <s>', 'The ISO 639-3 language code', 'eng')
+    .option('--check-ssa', 'Determines whether to check .ass files')
+    .option('--language <s>', 'The ISO 639-3 language code', 'eng')
     .addOption(sizeOption)
     .action(app.actions.parseAsync);
 }

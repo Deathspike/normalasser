@@ -15,6 +15,7 @@ async function checkAsync(resourcePath: string, options: app.Options) {
     await directoryAsync(resourcePath, options);
     console.log(`Finished ${resourcePath}`);
   } else if (resourceStat?.isFile() && resourcePath.endsWith('.ass')) {
+    if (!options.checkSsa) return;
     console.log(`Fetching ${resourcePath}`);
     await traceAsync(resourcePath, app.parseAsync(resourcePath, options));
   } else if (resourceStat?.isFile() && resourcePath.endsWith('.mkv')) {

@@ -73,11 +73,11 @@ Or to recursively find and parse `.ass`/`.mkv` files in a directory, run:
 
 To extract a different language than _English_ from a `.mkv`, like `ger` for _German_, run:
 
-    normalize-ssa parse -l ger /path/to/your/fileOrDirectory
+    normalize-ssa parse --language ger /path/to/your/fileOrDirectory
 
 And to select a different font size, run:
 
-    normalize-ssa parse -s large /path/to/your/fileOrDirectory
+    normalize-ssa parse --size large /path/to/your/fileOrDirectory
 
 The valid font sizes are `tiny`, `small`, `normal`, `large` or `huge`.
 
