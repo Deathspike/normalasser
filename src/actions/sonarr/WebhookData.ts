@@ -1,6 +1,6 @@
 import {WebhookSeries} from './WebhookSeries';
 
-export const WebhookPayload = {
+export const WebhookData = {
   type: 'object',
   properties: {
     series: WebhookSeries
