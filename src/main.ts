@@ -5,18 +5,31 @@ export function main() {
   return new commander.Command(require('../package').name)
     .description(require('../package').description)
     .version(require('../package').version)
-    .addCommand(parse());
+    .addCommand(commandParse())
+    .addCommand(commandServer());
 }
 
-function parse() {
-  const sizeOption = new commander.Option('--size <s>', 'The font size')
-    .choices(['tiny', 'small', 'normal', 'large', 'huge'])
-    .default('normal');
+function commandParse() {
   return new commander.Command('parse')
     .arguments('<path...>')
     .description('Recursively parse subtitles')
     .option('--check-ssa', 'Determines whether to check .ass files')
     .option('--language <s>', 'The ISO 639-3 language code', 'eng')
-    .addOption(sizeOption)
+    .addOption(optionSize())
     .action(app.actions.parseAsync);
+}
+
+function commandServer() {
+  return new commander.Command('server')
+    .description('Listen for HTTP events')
+    .option('--check-ssa', 'Determines whether to check .ass files')
+    .option('--language <s>', 'The ISO 639-3 language code', 'eng')
+    .addOption(optionSize())
+    .action(app.actions.serverAsync);
+}
+
+function optionSize() {
+  return new commander.Option('--size <s>', 'The font size')
+    .choices(['tiny', 'small', 'normal', 'large', 'huge'])
+    .default('normal');
 }

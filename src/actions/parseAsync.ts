@@ -21,6 +21,8 @@ async function checkAsync(resourcePath: string, options: app.Options) {
   } else if (resourceStat?.isFile() && resourcePath.endsWith('.mkv')) {
     console.log(`Fetching ${resourcePath}`);
     await traceAsync(resourcePath, app.extractAsync(resourcePath, options));
+  } else {
+    console.log(`Rejected ${resourcePath}`);
   }
 }
 
