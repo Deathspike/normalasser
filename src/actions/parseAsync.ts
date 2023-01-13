@@ -8,35 +8,47 @@ export async function parseAsync(paths: Array<string>, options: app.Options) {
   }
 }
 
-async function checkAsync(resourcePath: string, options: app.Options) {
-  const resourceStat = await fs.promises.stat(resourcePath).catch(() => {});
-  if (resourceStat?.isDirectory()) {
-    console.log(`Checking ${resourcePath}`);
-    await directoryAsync(resourcePath, options);
-    console.log(`Finished ${resourcePath}`);
-  } else if (resourceStat?.isFile() && resourcePath.endsWith('.ass')) {
-    if (!options.checkSsa) return;
-    console.log(`Fetching ${resourcePath}`);
-    await traceAsync(resourcePath, app.parseAsync(resourcePath, options));
-  } else if (resourceStat?.isFile() && resourcePath.endsWith('.mkv')) {
-    console.log(`Fetching ${resourcePath}`);
-    await traceAsync(resourcePath, app.extractAsync(resourcePath, options));
-  } else {
-    console.log(`Rejected ${resourcePath}`);
+async function checkAsync(path: string, options: app.Options) {
+  const stats = await fs.promises.stat(path).catch(() => {});
+  if (!stats) {
+    console.log(`Rejected ${path}`);
+  } else if (stats.isDirectory()) {
+    console.log(`Checking ${path}`);
+    await directoryAsync(path, options);
+    console.log(`Finished ${path}`);
+  } else if (stats.isFile() && path.endsWith('.ass')) {
+    console.log(`Fetching ${path}`);
+    await traceAsync(path, app.parseAsync(path, options));
+  } else if (stats.isFile() && path.endsWith('.mkv')) {
+    console.log(`Fetching ${path}`);
+    await traceAsync(path, app.extractAsync(path, options));
   }
 }
 
 async function directoryAsync(directoryPath: string, options: app.Options) {
-  const childNames = await fs.promises.readdir(directoryPath).catch(() => []);
-  const childPaths = new Set(childNames.map(x => path.join(directoryPath, x)));
-  for (const childPath of childPaths) {
-    if (childPaths.has(app.subtitlePath(childPath, options))) continue;
-    await checkAsync(childPath, options);
+  const names = await fs.promises.readdir(directoryPath).catch(() => []);
+  const paths = new Set(names.map(x => path.join(directoryPath, x)));
+  for (const path of paths) {
+    const stats = await fs.promises.stat(path).catch(() => {});
+    if (stats?.isDirectory()) {
+      await checkAsync(path, options);
+    } else if (stats?.isFile() && path.endsWith('.ass')) {
+      if (!options.checkAss) continue;
+      await checkAsync(path, options);
+    } else if (stats?.isFile() && path.endsWith('.mkv')) {
+      const subtitlePath = app.subtitlePath(path, options);
+      if (!options.forceMkv && paths.has(subtitlePath)) continue;
+      await checkAsync(path, options);
+    }
   }
 }
 
-async function traceAsync(resourcePath: string, resultAsync: Promise<boolean>) {
-  const result = await resultAsync.catch(() => false);
-  const status = result ? 'Finished' : 'Skipping';
-  console.log(`${status} ${resourcePath}`);
+async function traceAsync(path: string, resultAsync: Promise<boolean>) {
+  try {
+    const result = await resultAsync;
+    const status = result ? 'OK' : 'Not Found';
+    console.log(`Finished ${path} (${status})`);
+  } catch (err) {
+    console.log(`Rejected ${path}: ${err}`);
+  }
 }

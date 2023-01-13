@@ -13,7 +13,8 @@ function commandParse() {
   return new commander.Command('parse')
     .arguments('<path...>')
     .description('Recursively parse subtitles')
-    .option('--check-ssa', 'Determines whether to check .ass files')
+    .option('--check-ass', 'Determines whether to check .ass files')
+    .option('--force-mkv', 'Determines whether to force .mkv files')
     .option('--language <s>', 'The ISO 639-3 language code', 'eng')
     .addOption(optionSize())
     .action(app.actions.parseAsync);
@@ -22,7 +23,7 @@ function commandParse() {
 function commandServer() {
   return new commander.Command('server')
     .description('Listen for HTTP events')
-    .option('--check-ssa', 'Determines whether to check .ass files')
+    .option('--check-ass', 'Determines whether to check .ass files')
     .option('--language <s>', 'The ISO 639-3 language code', 'eng')
     .addOption(optionSize())
     .action(app.actions.serverAsync);

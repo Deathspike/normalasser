@@ -12,5 +12,6 @@ export async function serverAsync(options: app.Options) {
 }
 
 function enqueue(this: app.Options, path: string) {
-  queue = queue.then(() => app.actions.parseAsync([path], this));
+  const options: app.Options = {...this, forceMkv: true};
+  queue = queue.then(() => app.actions.parseAsync([path], options));
 }
