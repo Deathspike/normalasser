@@ -1,7 +1,6 @@
-export const WebhookSeries = {
+export const Series = {
   type: 'object',
   properties: {
     path: {type: 'string'}
-  },
-  required: ['path']
+  }
 } as const;

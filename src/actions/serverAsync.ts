@@ -1,17 +1,46 @@
 import * as app from '..';
 import * as fastify from 'fastify';
-import {radarr} from './radarr';
-import {sonarr} from './sonarr';
-let queue = Promise.resolve();
+import {Data} from './schemas/Data';
+import {FromSchema} from 'json-schema-to-ts';
+let packageData = require('../../package');
+let queuePromise = Promise.resolve();
 
 export async function serverAsync(options: app.Options) {
   const server = fastify.default();
-  server.route(radarr(enqueue.bind(options)));
-  server.route(sonarr(enqueue.bind(options)));
+  server.route(get());
+  server.route(post(options));
   await server.listen({host: '0.0.0.0', port: 7883});
 }
 
-function enqueue(this: app.Options, path: string) {
-  const options: app.Options = {...this, forceMkv: true};
-  queue = queue.then(() => app.actions.parseAsync([path], options));
+function get(): fastify.RouteOptions {
+  return {
+    method: 'GET',
+    url: '*',
+    handler: (_, res) => res.send(`${packageData.name}:${packageData.version}`)
+  };
+}
+
+function post(options: app.Options): fastify.RouteOptions {
+  return {
+    method: 'POST',
+    url: '*',
+    schema: {
+      body: Data
+    },
+    handler: (req, res) => {
+      const data = req.body as FromSchema<typeof Data>;
+      queue(data.movie?.folderPath, options);
+      queue(data.series?.path, options);
+      res.send();
+    }
+  };
+}
+
+function queue(path: string | undefined, options: app.Options) {
+  if (!path) return;
+  queuePromise = queuePromise.then(async () => {
+    const paths = [path];
+    const serverOptions: app.Options = {...options, forceMkv: true};
+    return await app.actions.parseAsync(paths, serverOptions);
+  });
 }

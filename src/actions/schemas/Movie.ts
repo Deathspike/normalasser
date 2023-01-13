@@ -1,7 +1,6 @@
-export const WebhookMovie = {
+export const Movie = {
   type: 'object',
   properties: {
     folderPath: {type: 'string'}
-  },
-  required: ['folderPath']
+  }
 } as const;
