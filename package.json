@@ -1,14 +1,14 @@
 {
-  "name": "normalize-ssa",
+  "name": "normalasser",
   "author": "Deathspike",
-  "description": "Extracts ssa/ass subtitle(s) from MKV videos and rescale/resize subtitles.",
+  "description": "Extract ass subtitles from mkv videos and normalizes them.",
   "license": "MIT",
-  "repository": "git://github.com/Deathspike/normalize-ssa",
+  "repository": "git://github.com/Deathspike/normalasser",
   "version": "2.0.0",
   "main": "dist",
   "types": "dist",
   "bin": {
-    "normalize-ssa": "./bin/normalize-ssa"
+    "normalasser": "./bin/normalasser"
   },
   "engines": {
     "node": ">= 18.0.0",

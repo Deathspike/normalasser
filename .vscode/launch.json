@@ -2,7 +2,7 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "args": ["bin/normalize-ssa"],
+      "args": ["bin/normalasser"],
       "name": "Launch Program",
       "outFiles": ["${workspaceFolder}/dist/**/*"],
       "outputCapture": "std",

@@ -18,4 +18,4 @@ COPY --from=build /app/package.json .
 COPY --from=build /app/package-lock.json .
 RUN npm install --omit=dev
 EXPOSE 7883
-ENTRYPOINT ["node", "bin/normalize-ssa", "server"]
+ENTRYPOINT ["node", "bin/normalasser", "server"]

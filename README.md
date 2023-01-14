@@ -1,6 +1,6 @@
-# normalize-ssa
+# normalasser
 
-Extracts ssa/ass subtitle(s) from MKV videos and rescale/resize subtitles.
+Extract `ass` subtitles from `mkv` videos and normalizes them. Unlike text-based subtitles like `srt`, `ass` subtitles have embedded styles that determine their appearance on screen. You have no control over the subtitle size. _Normalasser_ overrides offending styles to ensure a consistent subtitle size, while leaving other styles intact.
 
 # Prerequisites
 
@@ -9,77 +9,63 @@ Extracts ssa/ass subtitle(s) from MKV videos and rescale/resize subtitles.
 
 # Install
 
-## Windows
+## Debian (Ubuntu)
 
 1. Install _nodejs_ following the instructions at http://nodejs.org/
-2. Install _ffmpeg_ following the instructions at https://www.wikihow.com/Install-FFmpeg-on-Windows
-3. Run in _Command Prompt_: `npm install -g normalize-ssa`
+2. Run in _Terminal_: `apt install ffmpeg`
+3. Run in _Terminal_: `npm install -g normalasser`
 
-## Mac OS X
+## MacOS
 
 1. Install _nodejs_ following the instructions at http://nodejs.org/
 2. Install _homebrew_ following the instructions at https://brew.sh/
 3. Run in _Terminal_: `brew install ffmpeg`
-4. Run in _Terminal_: `npm install -g normalize-ssa`
-
-## Debian (Mint, Ubuntu, etc)
-
-1. Install _nodejs_ following the instructions at http://nodejs.org/
-2. Run in _Terminal_: `sudo apt install ffmpeg`
-3. Run in _Terminal_: `sudo npm install -g normalize-ssa`
-
-# Update
+4. Run in _Terminal_: `npm install -g normalasser`
 
 ## Windows
 
-1. Ensure that `normalize-ssa` is [installed](#Install)
-2. Run in _Command Prompt_: `npm install -g normalize-ssa`
-
-## Mac OS X
-
-1. Ensure that `normalize-ssa` is [installed](#Install)
-2. Run in _Terminal_: `npm install -g normalize-ssa`
-
-## Debian (Mint, Ubuntu, etc)
-
-1. Ensure that `normalize-ssa` is [installed](#Install)
-2. Run in _Terminal_: `sudo npm install -g normalize-ssa`
+1. Install _nodejs_ following the instructions at http://nodejs.org/
+2. Install _ffmpeg_ following the instructions at https://www.wikihow.com/Install-FFmpeg-on-Windows
+3. Run in _Command Prompt_: `npm install -g normalasser`
 
 # Usage
 
 ```
-Usage: normalize-ssa [options] [command]
+Usage: normalasser [options] [command]
 
-Extracts ssa/ass subtitle(s) from MKV videos and rescale/resize subtitles.
+Extract ass subtitles from mkv videos and normalizes them.
 
 Options:
-  -V, --version                      output the version number
-  -h, --help                         display help for command
+  -V, --version              output the version number
+  -h, --help                 display help for command
 
 Commands:
-  parse [options] <resourcePath...>  Parse subtitle(s).
-  help [command]                     display help for command
+  parse [options] <path...>  Recursively parse subtitles
+  server [options]           Listen for HTTP events
+  help [command]             display help for command
 ```
 
 ## Parse
 
-To parse _subtitles_ and rescale/resize, run:
+Parse extracts `ass` subtitles from `mkv` videos and normalizes them, or normalizes already extracted `ass` subtitles. When invoked with a folder path, _normalasser_ will recursively scan for `mkv` videos without an extracted `ass` subtitle.
 
-    normalize-ssa parse /path/to/your/video.mkv
+### Examples
 
-Or to recursively find and parse `.ass`/`.mkv` files in a directory, run:
+A) Extract _English_ `ass` subtitle from a `mkv` video and normalize to a _normal_ size:
 
-    normalize-ssa parse /path/to/your/directory
+    normalasser parse /path/to/your/video.mkv
 
-To extract a different language than _English_ from a `.mkv`, like `ger` for _German_, run:
+B) Extract _German_ `ass` subtitle from a `mkv` video and normalize to a _normal_ size:
 
-    normalize-ssa parse --language ger /path/to/your/fileOrDirectory
+    normalasser parse --language ger /path/to/your/video.mkv
 
-And to select a different font size, run:
+C) Extract _English_ `ass` subtitle from a `mkv` video and normalize to a _small_ size:
 
-    normalize-ssa parse --size large /path/to/your/fileOrDirectory
+    normalasser parse --size small /path/to/your/video.mkv
 
-The valid font sizes are `tiny`, `small`, `normal`, `large` or `huge`.
+## Server
+
+Server will run a HTTP server that listens to `POST` requests on port `7883`. Once a request comes in, _normalasser_ runs `parse` on the received path. Requests may be queued up and will execute when the previous requests have finished. The HTTP listener is compatible with _Radarr_ and _Sonarr_ webhooks.
 
 # Contributions
 
