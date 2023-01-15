@@ -49,6 +49,7 @@ async function traceAsync(path: string, resultAsync: Promise<boolean>) {
     const status = result ? 'OK' : 'Not Found';
     console.log(`Finished ${path} (${status})`);
   } catch (err) {
-    console.log(`Rejected ${path}: ${err}`);
+    const status = err instanceof Error ? err.stack : err;
+    console.log(`Rejected ${path}: ${status}`);
   }
 }
