@@ -28,7 +28,7 @@
     "typescript": "4.9.4"
   },
   "scripts": {
-    "build": "npm run repository:prune && npm run repository:build",
+    "prepack": "npm run repository:prune && npm run repository:build",
     "prettier:check": "prettier --check .",
     "prettier:write": "prettier --write .",
     "repository:build": "tsc",
