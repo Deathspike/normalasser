@@ -4,7 +4,7 @@
   "description": "Extract ass subtitles from mkv videos and normalizes them.",
   "license": "MIT",
   "repository": "git://github.com/Deathspike/normalasser",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "main": "dist",
   "types": "dist",
   "bin": {
