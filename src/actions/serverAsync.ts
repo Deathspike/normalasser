@@ -29,14 +29,14 @@ function post(options: app.Options): fastify.RouteOptions {
     },
     handler: (req, res) => {
       const data = req.body as FromSchema<typeof Data>;
-      queue(data.movie?.folderPath, options);
-      queue(data.series?.path, options);
+      queue(options, data.movie?.folderPath);
+      queue(options, data.series?.path);
       res.send();
     }
   };
 }
 
-function queue(path: string | undefined, options: app.Options) {
+function queue(options: app.Options, path?: string) {
   if (!path) return;
   queuePromise = queuePromise.then(async () => {
     const paths = [path];

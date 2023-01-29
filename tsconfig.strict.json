@@ -22,7 +22,6 @@
     "strictNullChecks": true,
     "strictPropertyInitialization": true,
     "target": "ES2022",
-    "useDefineForClassFields": false,
     "useUnknownInCatchVariables": true
   }
 }

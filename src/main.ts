@@ -12,7 +12,7 @@ export function main() {
 function commandParse() {
   return new commander.Command('parse')
     .arguments('<path...>')
-    .description('Recursively parse subtitles')
+    .description('Parse subtitles')
     .option('--check-ass', 'Determines whether to check .ass files')
     .option('--force-mkv', 'Determines whether to force .mkv files')
     .option('--language <s>', 'The ISO 639-3 language code', 'eng')

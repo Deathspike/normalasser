@@ -43,13 +43,13 @@ async function directoryAsync(directoryPath: string, options: app.Options) {
   }
 }
 
-async function traceAsync(path: string, resultAsync: Promise<boolean>) {
+async function traceAsync(filePath: string, resultAsync: Promise<boolean>) {
   try {
     const result = await resultAsync;
     const status = result ? 'OK' : 'Not Found';
-    console.log(`Finished ${path} (${status})`);
+    console.log(`Finished ${filePath} (${status})`);
   } catch (err) {
     const status = err instanceof Error ? err.stack : err;
-    console.log(`Rejected ${path}: ${status}`);
+    console.log(`Rejected ${filePath}: ${status}`);
   }
 }

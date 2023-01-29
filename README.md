@@ -40,7 +40,7 @@ Options:
   -h, --help                 display help for command
 
 Commands:
-  parse [options] <path...>  Recursively parse subtitles
+  parse [options] <path...>  Parse subtitles
   server [options]           Listen for HTTP events
   help [command]             display help for command
 ```
