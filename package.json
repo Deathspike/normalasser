@@ -15,7 +15,6 @@
     "npm": ">= 8.0.0"
   },
   "dependencies": {
-    "ass-compiler": "0.1.4",
     "commander": "9.4.1",
     "fastify": "4.11.0"
   },

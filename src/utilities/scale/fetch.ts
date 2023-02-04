@@ -1,10 +1,10 @@
-import * as ass from 'ass-compiler';
+import * as ass from '../ass';
 import {check} from './check';
 
-export function fetch(subtitle: ass.ParsedASS) {
+export function fetch(subtitle: ass.Tree) {
   const result = check(subtitle);
   const name = run(result);
-  return subtitle.styles.style.find(x => x.Name === name);
+  return name ? subtitle.styles.find(x => x.get('Name')?.is(name)) : undefined;
 }
 
 function run(result: ReturnType<typeof check>) {
