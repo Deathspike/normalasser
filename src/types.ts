@@ -2,12 +2,12 @@ export interface Options {
   /**
    * Determines whether to check `.ass` files.
    */
-  checkAss?: true;
+  checkAss?: boolean;
 
   /**
    * Determines whether to force `.mkv` files.
    */
-  forceMkv?: true;
+  forceMkv?: boolean;
 
   /**
    * The ISO 639-3 language code. Default: `eng`.

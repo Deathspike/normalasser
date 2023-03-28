@@ -1,4 +1,4 @@
-export const Series = {
+export const Ref = {
   type: 'object',
   properties: {
     path: {type: 'string'}

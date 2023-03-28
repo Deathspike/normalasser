@@ -1,10 +1,10 @@
-import {Movie} from './Movie';
-import {Series} from './Series';
+import {Ref} from './Ref';
 
 export const Data = {
   type: 'object',
   properties: {
-    movie: Movie,
-    series: Series
+    isUpgrade: {type: 'boolean'},
+    movieFile: Ref,
+    series: Ref
   }
 } as const;

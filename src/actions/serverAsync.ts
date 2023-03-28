@@ -3,7 +3,7 @@ import * as fastify from 'fastify';
 import {Data} from './schemas/Data';
 import {FromSchema} from 'json-schema-to-ts';
 let packageData = require('../../package');
-let queuePromise = Promise.resolve();
+let queue = Promise.resolve();
 
 export async function serverAsync(options: app.Options) {
   const server = fastify.default();
@@ -29,18 +29,15 @@ function post(options: app.Options): fastify.RouteOptions {
     },
     handler: (req, res) => {
       const data = req.body as FromSchema<typeof Data>;
-      queue(options, data.movie?.folderPath);
-      queue(options, data.series?.path);
+      const forceMkv = data.isUpgrade;
+      enqueue({...options, forceMkv}, data.movieFile?.path);
+      enqueue({...options, forceMkv}, data.series?.path);
       res.send();
     }
   };
 }
 
-function queue(options: app.Options, path?: string) {
+function enqueue(options: app.Options, path?: string) {
   if (!path) return;
-  queuePromise = queuePromise.then(async () => {
-    const paths = [path];
-    const serverOptions: app.Options = {...options, forceMkv: true};
-    return await app.actions.parseAsync(paths, serverOptions);
-  });
+  queue = queue.then(() => app.actions.parseAsync([path], options));
 }
