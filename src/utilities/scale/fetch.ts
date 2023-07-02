@@ -3,8 +3,13 @@ import {check} from './check';
 
 export function fetch(subtitle: ass.Tree) {
   const result = check(subtitle);
-  const name = run(result);
-  return name ? subtitle.styles.find(x => x.get('Name')?.is(name)) : undefined;
+  const primaryName = run(result);
+  const primaryStyle = primaryName
+    ? subtitle.styles.find(x => x.get('Name')?.is(primaryName))
+    : undefined;
+  return primaryStyle
+    ? primaryStyle
+    : subtitle.styles.find(x => x.get('Name')?.is('Default'));
 }
 
 function run(result: ReturnType<typeof check>) {
