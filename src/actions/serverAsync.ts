@@ -1,43 +1,54 @@
 import * as app from '..';
 import * as fastify from 'fastify';
+import * as path from 'node:path';
 import {Data} from './schemas/Data';
 import {FromSchema} from 'json-schema-to-ts';
-let packageData = require('../../package');
-let queue = Promise.resolve();
+import {Queue} from './classes/Queue';
+const packageData = require('../../package');
 
 export async function serverAsync(options: app.Options) {
+  const root = path.join(__dirname, '../../public');
+  const queue = await Queue.createAsync('queue.json', createHandler(options));
   const server = fastify.default();
-  server.route(get());
-  server.route(post(options));
+  server.register(require('@fastify/static'), {root});
+  server.route(get(queue));
+  server.route(post(queue));
   await server.listen({host: '0.0.0.0', port: 7883});
 }
 
-function get(): fastify.RouteOptions {
-  return {
-    method: 'GET',
-    url: '*',
-    handler: (_, res) => res.send(`${packageData.name}:${packageData.version}`)
+function createHandler(options: app.Options) {
+  return async (path: string) => {
+    await app.actions.parseAsync([path], options);
   };
 }
 
-function post(options: app.Options): fastify.RouteOptions {
+function get(queue: Queue): fastify.RouteOptions {
+  return {
+    method: 'GET',
+    url: '/api/v1',
+    handler: (_, res) => {
+      res.send({
+        name: packageData.name,
+        version: packageData.version,
+        events: app.logger.all(),
+        queue: queue.all()
+      });
+    }
+  };
+}
+
+function post(queue: Queue): fastify.RouteOptions {
   return {
     method: 'POST',
-    url: '*',
+    url: '/api/v1',
     schema: {
       body: Data
     },
     handler: (req, res) => {
       const data = req.body as FromSchema<typeof Data>;
-      const forceMkv = data.isUpgrade;
-      enqueue({...options, forceMkv}, data.movieFile?.path);
-      enqueue({...options, forceMkv}, data.series?.path);
+      queue.enqueue(data.movieFile?.path);
+      queue.enqueue(data.series?.path);
       res.send();
     }
   };
-}
-
-function enqueue(options: app.Options, path?: string) {
-  if (!path) return;
-  queue = queue.then(() => app.actions.parseAsync([path], options));
 }

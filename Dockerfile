@@ -15,6 +15,7 @@ COPY --from=mwader/static-ffmpeg:6.0-1 /ffmpeg /usr/local/bin
 COPY --from=mwader/static-ffmpeg:6.0-1 /ffprobe /usr/local/bin
 COPY --from=build /app/bin ./bin
 COPY --from=build /app/dist ./dist
+COPY --from=build /app/public ./public
 COPY --from=build /app/Docker.sh .
 COPY --from=build /app/package.json .
 COPY --from=build /app/package-lock.json .

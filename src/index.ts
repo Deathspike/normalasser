@@ -4,5 +4,6 @@ export * as actions from './actions';
 export * from './functions/extractAsync';
 export * from './functions/ffmpegAsync';
 export * from './functions/parseAsync';
+export * from './utilities/logger';
 export * from './utilities/subtitlePath';
 export * from './utilities/subtitleScale';

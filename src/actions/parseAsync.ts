@@ -11,16 +11,16 @@ export async function parseAsync(paths: Array<string>, options: app.Options) {
 async function checkAsync(path: string, options: app.Options) {
   const stats = await fs.promises.stat(path).catch(() => {});
   if (!stats) {
-    console.log(`Rejected ${path}`);
+    app.logger.info(`Rejected ${path}`);
   } else if (stats.isDirectory()) {
-    console.log(`Checking ${path}`);
+    app.logger.info(`Checking ${path}`);
     await directoryAsync(path, options);
-    console.log(`Finished ${path}`);
+    app.logger.info(`Finished ${path}`);
   } else if (stats.isFile() && path.endsWith('.ass')) {
-    console.log(`Fetching ${path}`);
+    app.logger.info(`Fetching ${path}`);
     await traceAsync(path, app.parseAsync(path, options));
   } else if (stats.isFile() && path.endsWith('.mkv')) {
-    console.log(`Fetching ${path}`);
+    app.logger.info(`Fetching ${path}`);
     await traceAsync(path, app.extractAsync(path, options));
   }
 }
@@ -47,9 +47,9 @@ async function traceAsync(filePath: string, resultAsync: Promise<boolean>) {
   try {
     const result = await resultAsync;
     const status = result ? 'OK' : 'Not Found';
-    console.log(`Finished ${filePath} (${status})`);
+    app.logger.info(`Finished ${filePath} (${status})`);
   } catch (err) {
     const status = err instanceof Error ? err.stack : err;
-    console.log(`Rejected ${filePath}: ${status}`);
+    app.logger.info(`Rejected ${filePath}: ${status}`);
   }
 }

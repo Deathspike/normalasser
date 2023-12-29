@@ -1,0 +1,42 @@
+body {
+  background-color: #222;
+  color: #fff;
+  font-family: monospace;
+  margin: 0;
+  overflow-y: scroll;
+  padding: 0;
+}
+
+#container {
+  display: none;
+  margin: 0 auto;
+  max-width: 800px;
+  padding: 16px;
+}
+
+#header {
+  margin: 0;
+  text-align: center;
+}
+
+#version {
+  margin-top: 0;
+  text-align: center;
+}
+
+#input {
+  border: 0;
+  font-family: monospace;
+  outline: 0;
+  padding: 8px;
+  width: calc(100% - 16px);
+}
+
+#events,
+#queue {
+  background-color: #fff;
+  color: #222;
+  overflow: auto;
+  padding: 8px;
+  width: calc(100% - 16px);
+}
