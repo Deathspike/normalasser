@@ -2,6 +2,27 @@
 
 Extract `ass` subtitles from `mkv` videos and normalizes them. Unlike text-based subtitles like `srt`, `ass` subtitles have embedded styles that determine their appearance on screen. You have no control over the subtitle size. _Normalasser_ overrides offending styles to ensure a consistent subtitle size, while leaving other styles intact.
 
+# Preview
+
+<table width="100%">
+  <tr>
+    <td width="50%">Before</td>
+    <td width="50%">After</td>
+  </tr>
+  <tr>
+    <td width="50%"><img src="docs/a-certain-scientific-railgun-before.png"></td>
+    <td width="50%"><img src="docs/a-certain-scientific-railgun-after.png"></td>
+  </tr>
+  <tr>
+    <td width="50%"><img src="docs/brave-witches-before.png"></td>
+    <td width="50%"><img src="docs/brave-witches-after.png"></td>
+  </tr>
+  <tr>
+    <td width="50%"><img src="docs/violet-evergarden-before.png"></td>
+    <td width="50%"><img src="docs/violet-evergarden-after.png"></td>
+  </tr>
+</table>
+
 # Prerequisites
 
 - [`node`](http://nodejs.org/) >= `18`
