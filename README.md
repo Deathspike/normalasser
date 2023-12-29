@@ -4,29 +4,15 @@ Extract `ass` subtitles from `mkv` videos and normalizes them. Unlike text-based
 
 # Prerequisites
 
-- NodeJS >= 18 (http://nodejs.org/)
-- NPM >= 8 (https://www.npmjs.org/)
+- [`node`](http://nodejs.org/) >= `18`
+- [`npm`](https://www.npmjs.org/) >= `8`
+- [`ffmpeg`](https://ffmpeg.org/) >= `6`
 
 # Install
 
-## Debian (Ubuntu)
-
-1. Install _nodejs_ following the instructions at http://nodejs.org/
-2. Run in _Terminal_: `apt install ffmpeg`
-3. Run in _Terminal_: `npm install -g normalasser`
-
-## MacOS
-
-1. Install _nodejs_ following the instructions at http://nodejs.org/
-2. Install _homebrew_ following the instructions at https://brew.sh/
-3. Run in _Terminal_: `brew install ffmpeg`
-4. Run in _Terminal_: `npm install -g normalasser`
-
-## Windows
-
-1. Install _nodejs_ following the instructions at http://nodejs.org/
-2. Install _ffmpeg_ following the instructions at https://www.wikihow.com/Install-FFmpeg-on-Windows
-3. Run in _Command Prompt_: `npm install -g normalasser`
+```
+npm install -g normalasser
+```
 
 # Usage
 
