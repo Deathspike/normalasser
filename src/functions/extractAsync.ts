@@ -1,4 +1,5 @@
 import * as app from '..';
+import * as fs from 'node:fs';
 
 export async function extractAsync(filePath: string, options: app.Options) {
   const languages = await languagesAsync(filePath, options);
@@ -7,6 +8,7 @@ export async function extractAsync(filePath: string, options: app.Options) {
     const args = ['-y', '-i', filePath, '-map', `0:${languageId}`, '-f', 'ass'];
     const tempPath = `${app.subtitlePath(filePath, options)}.tmp`;
     await app.ffmpegAsync(args.concat(tempPath));
+    await waitForFileFlushAsync(tempPath);
     return await app.parseAsync(tempPath, options);
   } else {
     return false;
@@ -24,4 +26,20 @@ async function languagesAsync(filePath: string, options: app.Options) {
     if (!result.has(language)) result.set(language, id);
   }
   return result;
+}
+
+async function waitForFileFlushAsync(filePath: string) {
+  let oldSize = -1;
+  for (let i = 0; i < 10; i++) {
+    const newSize = await fs.promises
+      .stat(filePath)
+      .then(x => x.size)
+      .catch(() => 0);
+    if (!newSize || oldSize !== newSize) {
+      oldSize = newSize;
+      await new Promise(x => setTimeout(x, 1000));
+    } else {
+      break;
+    }
+  }
 }
