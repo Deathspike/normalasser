@@ -1,9 +1,9 @@
-import * as ssa from '..';
+import * as app from '.';
 
 export class TreePair {
   constructor(
-    readonly format: ssa.KeyListPair,
-    readonly value: ssa.KeyListPair
+    readonly format: app.KeyListPair,
+    readonly value: app.KeyListPair
   ) {}
 
   get(name: string) {
@@ -36,9 +36,5 @@ export class TreePair {
     const field = this.get(name);
     if (!field) return;
     field.text = value.toString();
-  }
-
-  toString() {
-    return this.value.toString();
   }
 }

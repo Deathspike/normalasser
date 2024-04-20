@@ -19,7 +19,7 @@ async function checkAsync(path: string, options: app.Options) {
     console.log(`Finished ${path}`);
   } else if (stats.isFile() && path.endsWith('.ass')) {
     console.log(`Fetching ${path}`);
-    await traceAsync(path, app.parseAsync(path, options.size));
+    await traceAsync(path, app.normalizeAsync(path, options.size));
   } else if (stats.isFile() && path.endsWith('.mkv')) {
     console.log(`Fetching ${path}`);
     await traceAsync(path, app.extractAsync(path, options.size));

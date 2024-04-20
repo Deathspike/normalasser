@@ -1,3 +1,5 @@
+import * as app from '.';
+
 export interface Options {
   /**
    * Determines whether to check `.ass` files.
@@ -12,10 +14,5 @@ export interface Options {
   /**
    * The font size. Default: `normal`.
    */
-  size: Size;
+  size: app.features.normalizer.Size;
 }
-
-/**
- * The font size.
- */
-export type Size = 'tiny' | 'small' | 'normal' | 'large' | 'huge';

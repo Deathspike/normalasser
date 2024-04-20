@@ -1,15 +1,15 @@
-import * as app from '..';
-import * as ass from './ass';
-import {fetch} from './scale/fetch';
+import * as app from '.';
+import {getPrimaryStyle} from './utils/getPrimaryStyle';
+import {ssa} from '..';
 
-export function subtitleScale(value: string, size: app.Size) {
-  const subtitle = new ass.Tree(value);
+export function normalize(value: string, size: app.Size) {
+  const subtitle = new ssa.Tree(value);
   run(subtitle, size);
   return subtitle.toString();
 }
 
-function run(subtitle: ass.Tree, size: app.Size) {
-  const primary = fetch(subtitle);
+function run(subtitle: ssa.Tree, size: app.Size) {
+  const primary = getPrimaryStyle(subtitle);
   const primaryFontSize = primary?.getFloat('FontSize');
   const primaryMargin = primary?.getFloat('MarginV');
   if (primaryFontSize) {

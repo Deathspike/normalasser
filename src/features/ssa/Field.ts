@@ -10,8 +10,7 @@ export class Field {
   }
 
   is(value: string) {
-    const options = {sensitivity: 'accent'};
-    return !this.text.localeCompare(value, undefined, options);
+    return !this.text.localeCompare(value, undefined, {sensitivity: 'accent'});
   }
 
   toString() {
