@@ -12,40 +12,41 @@ export class Extractor {
     private readonly outputPath: string
   ) {}
 
-  async runAsync() {
+  async runAsync(processAsync: ProcessAsync) {
     try {
       await fs.promises.rm(this.outputPath, {recursive: true, force: true});
       await fs.promises.mkdir(this.outputPath, {recursive: true});
-      return await this.extractAsync();
+      return await this.extractAsync(processAsync);
     } finally {
       await fs.promises.rm(this.outputPath, {recursive: true, force: true});
     }
   }
 
-  private async extractAsync() {
+  private async extractAsync(processAsync: ProcessAsync) {
     if (await ffmpegAsync(this.args)) {
-      await waitAsync(this.outputPath);
-      const existingPaths = await existingAsync(this.baseName, this.basePath);
-      return await this.finishAsync(existingPaths);
+      const tempNames = await fs.promises.readdir(this.outputPath);
+      const tempPaths = tempNames.map(x => path.join(this.outputPath, x));
+      await Promise.all(tempPaths.map(x => waitAsync(x)));
+      await Promise.all(tempPaths.map(x => processAsync(x)));
+      await this.moveAsync(tempNames);
+      return true;
     } else {
-      return;
+      return false;
     }
   }
 
-  private async finishAsync(existingPaths: Array<string>) {
-    const newNames = await fs.promises.readdir(this.outputPath);
-    const newPaths: Array<string> = [];
-    for (const tempName of newNames) {
+  private async moveAsync(tempNames: Array<string>) {
+    for (const tempName of tempNames) {
       const oldPath = path.join(this.outputPath, tempName);
       const newPath = path.join(this.basePath, tempName);
       await fs.promises.rename(oldPath, newPath);
-      newPaths.push(newPath);
     }
-    for (const existingPath of existingPaths) {
-      const name = path.basename(existingPath);
-      if (newNames.includes(name)) continue;
-      await fs.promises.rm(existingPath);
+    for (const fullPath of await existingAsync(this.baseName, this.basePath)) {
+      const name = path.basename(fullPath);
+      if (tempNames.includes(name)) continue;
+      await fs.promises.rm(fullPath);
     }
-    return newPaths;
   }
 }
+
+type ProcessAsync = (fullPath: string) => Promise<void>;
