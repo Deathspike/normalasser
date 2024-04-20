@@ -10,12 +10,12 @@ export interface Options {
   forceMkv?: boolean;
 
   /**
-   * The ISO 639-3 language code. Default: `eng`.
-   */
-  language: string;
-
-  /**
    * The font size. Default: `normal`.
    */
-  size: 'tiny' | 'small' | 'normal' | 'large' | 'huge';
+  size: Size;
 }
+
+/**
+ * The font size.
+ */
+export type Size = 'tiny' | 'small' | 'normal' | 'large' | 'huge';

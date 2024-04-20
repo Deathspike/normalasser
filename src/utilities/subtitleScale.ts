@@ -2,13 +2,13 @@ import * as app from '..';
 import * as ass from './ass';
 import {fetch} from './scale/fetch';
 
-export function subtitleScale(value: string, options: app.Options) {
+export function subtitleScale(value: string, size: app.Size) {
   const subtitle = new ass.Tree(value);
-  run(subtitle, options);
+  run(subtitle, size);
   return subtitle.toString();
 }
 
-function run(subtitle: ass.Tree, options: app.Options) {
+function run(subtitle: ass.Tree, size: app.Size) {
   const primary = fetch(subtitle);
   const primaryFontSize = primary?.getFloat('FontSize');
   const primaryMargin = primary?.getFloat('MarginV');
@@ -21,7 +21,7 @@ function run(subtitle: ass.Tree, options: app.Options) {
       const styleMargin = style.getFloat('MarginV');
       if (styleFontSize) {
         const fontScale = (1 / primaryFontSize) * styleFontSize;
-        const fontSize = fontSizes[options.size] * screenScale * fontScale;
+        const fontSize = fontSizes[size] * screenScale * fontScale;
         style.set('FontSize', fontSize);
       }
       if (styleMargin && styleMargin === primaryMargin) {
