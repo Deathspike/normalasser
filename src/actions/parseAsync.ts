@@ -3,13 +3,13 @@ import * as fs from 'node:fs';
 import * as path from 'node:path';
 import {hasSubtitle} from './utils/hasSubtitle';
 
-export async function parseAsync(paths: Array<string>, options: app.Options) {
+export async function parseAsync(paths: Array<string>, options?: app.Options) {
   for (const path of paths) {
     await checkAsync(path, options);
   }
 }
 
-async function checkAsync(path: string, options: app.Options) {
+async function checkAsync(path: string, options?: app.Options) {
   const stats = await fs.promises.stat(path).catch(() => {});
   if (!stats) {
     console.log(`Rejected ${path}`);
@@ -19,38 +19,38 @@ async function checkAsync(path: string, options: app.Options) {
     console.log(`Finished ${path}`);
   } else if (stats.isFile() && path.endsWith('.ass')) {
     console.log(`Fetching ${path}`);
-    await traceAsync(path, app.normalizeAsync(path, options.size));
+    await traceAsync(path, app.normalizeAsync(path, options?.size));
   } else if (stats.isFile() && path.endsWith('.mkv')) {
     console.log(`Fetching ${path}`);
-    await traceAsync(path, app.extractAsync(path, options.size));
+    await traceAsync(path, app.extractAsync(path, options?.size));
   }
 }
 
-async function directoryAsync(directoryPath: string, options: app.Options) {
-  const childNames = await fs.promises.readdir(directoryPath).catch(() => []);
+async function directoryAsync(fullPath: string, options?: app.Options) {
+  const childNames = await fs.promises.readdir(fullPath).catch(() => []);
   const childSet = new Set(childNames);
   for (const childName of childNames) {
-    const childPath = path.join(directoryPath, childName);
+    const childPath = path.join(fullPath, childName);
     const stats = await fs.promises.stat(childPath).catch(() => {});
     if (stats?.isDirectory()) {
       await checkAsync(childPath, options);
     } else if (stats?.isFile() && childName.endsWith('.ass')) {
-      if (!options.checkAss) continue;
+      if (!options?.checkAss) continue;
       await checkAsync(childPath, options);
     } else if (stats?.isFile() && childName.endsWith('.mkv')) {
-      if (!options.forceMkv && hasSubtitle(childName, childSet)) continue;
+      if (!options?.forceMkv && hasSubtitle(childName, childSet)) continue;
       await checkAsync(childPath, options);
     }
   }
 }
 
-async function traceAsync(filePath: string, resultAsync: Promise<boolean>) {
+async function traceAsync(fullPath: string, resultAsync: Promise<boolean>) {
   try {
     const result = await resultAsync;
     const status = result ? 'OK' : 'Not Found';
-    console.log(`Finished ${filePath} (${status})`);
+    console.log(`Finished ${fullPath} (${status})`);
   } catch (err) {
     const status = err instanceof Error ? err.stack : err;
-    console.log(`Rejected ${filePath}: ${status}`);
+    console.log(`Rejected ${fullPath}: ${status}`);
   }
 }

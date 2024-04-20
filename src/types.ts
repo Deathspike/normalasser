@@ -14,5 +14,5 @@ export interface Options {
   /**
    * The font size. Default: `normal`.
    */
-  size: app.features.normalizer.Size;
+  size?: app.features.normalizer.Size;
 }

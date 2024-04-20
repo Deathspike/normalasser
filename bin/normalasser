@@ -1,4 +1,4 @@
 #!/usr/bin/env node
 const {join} = require('path');
-const {main} = require(join(__dirname, '..'));
-main().parse();
+const {mainAsync} = require(join(__dirname, '..'));
+mainAsync();

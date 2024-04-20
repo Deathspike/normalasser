@@ -1,8 +1,8 @@
 import {ssa} from '../..';
 
-export function getDurations(subtitle: ssa.Tree) {
+export function getDurations(tree: ssa.Tree) {
   const entries = new Map<string, Entry>();
-  run(subtitle, entries);
+  fill(tree, entries);
   return get(entries);
 }
 
@@ -12,8 +12,8 @@ function get(entries: Map<string, Entry>) {
   return durations;
 }
 
-function run(subtitle: ssa.Tree, entries: Map<string, Entry>) {
-  const events = subtitle.events
+function fill(tree: ssa.Tree, entries: Map<string, Entry>) {
+  const events = tree.events
     .filter(x => x.value.key.is('Dialogue'))
     .sort((a, b) => a.getTime('Start') - b.getTime('Start'));
   for (const event of events) {
