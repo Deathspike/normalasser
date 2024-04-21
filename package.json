@@ -17,17 +17,15 @@
   "devDependencies": {
     "@types/node": "20.12.7",
     "pre-commit": "1.2.2",
-    "prettier": "2.8.1",
-    "rimraf": "3.0.2",
-    "typescript": "4.9.4"
+    "prettier": "3.2.5",
+    "typescript": "5.4.5"
   },
   "scripts": {
-    "prepack": "npm run repository:prune && npm run repository:build",
+    "prepack": "npm run tsc:build",
     "prettier:check": "prettier --check .",
     "prettier:write": "prettier --write .",
-    "repository:build": "tsc",
-    "repository:prune": "rimraf build && rimraf dist",
-    "start": "node .",
-    "test": "npm run prettier:check"
+    "test": "npm run prettier:check && npm run tsc:build",
+    "tsc:build": "tsc",
+    "tsc:watch": "tsc --watch"
   }
 }

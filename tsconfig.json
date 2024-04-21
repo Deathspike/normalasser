@@ -2,7 +2,9 @@
   "extends": "./tsconfig.strict.json",
   "compilerOptions": {
     "declaration": true,
+    "module": "CommonJS",
     "outDir": "dist",
-    "sourceMap": true
+    "sourceMap": true,
+    "target": "ES2022"
   }
 }
