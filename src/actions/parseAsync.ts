@@ -4,25 +4,25 @@ import * as path from 'node:path';
 import {hasSubtitle} from './utils/hasSubtitle';
 
 export async function parseAsync(paths: Array<string>, options?: app.Options) {
-  for (const path of paths) {
-    await checkAsync(path, options);
+  for (const fullPath of paths) {
+    await checkAsync(fullPath, options);
   }
 }
 
-async function checkAsync(path: string, options?: app.Options) {
-  const stats = await fs.promises.stat(path).catch(() => {});
+async function checkAsync(fullPath: string, options?: app.Options) {
+  const stats = await fs.promises.stat(fullPath).catch(() => {});
   if (!stats) {
-    console.log(`Rejected ${path}`);
+    console.log(`Rejected ${fullPath}`);
   } else if (stats.isDirectory()) {
-    console.log(`Checking ${path}`);
-    await directoryAsync(path, options);
-    console.log(`Finished ${path}`);
-  } else if (stats.isFile() && path.endsWith('.ass')) {
-    console.log(`Fetching ${path}`);
-    await traceAsync(path, app.normalizeAsync(path, options?.size));
-  } else if (stats.isFile() && path.endsWith('.mkv')) {
-    console.log(`Fetching ${path}`);
-    await traceAsync(path, app.extractAsync(path, options?.size));
+    console.log(`Checking ${fullPath}`);
+    await directoryAsync(fullPath, options);
+    console.log(`Finished ${fullPath}`);
+  } else if (stats.isFile() && fullPath.endsWith('.ass')) {
+    console.log(`Fetching ${fullPath}`);
+    await traceAsync(fullPath, app.normalizeAsync(fullPath, options?.size));
+  } else if (stats.isFile() && fullPath.endsWith('.mkv')) {
+    console.log(`Fetching ${fullPath}`);
+    await traceAsync(fullPath, app.extractAsync(fullPath, options?.size));
   }
 }
 
@@ -47,8 +47,8 @@ async function directoryAsync(fullPath: string, options?: app.Options) {
 async function traceAsync(fullPath: string, resultAsync: Promise<boolean>) {
   try {
     const result = await resultAsync;
-    const status = result ? 'OK' : 'Not Found';
-    console.log(`Finished ${fullPath} (${status})`);
+    const status = result ? 'Finished' : 'Skipping';
+    console.log(`${status} ${fullPath}`);
   } catch (err) {
     const status = err instanceof Error ? err.stack : err;
     console.log(`Rejected ${fullPath}: ${status}`);
