@@ -10,16 +10,20 @@ _Normalasser_ extracts ASS subtitles from MKV video files and normalizes their a
     <td width="50%">After</td>
   </tr>
   <tr>
-    <td width="50%"><img src="docs/a-certain-scientific-railgun-before.png"></td>
-    <td width="50%"><img src="docs/a-certain-scientific-railgun-after.png"></td>
+    <td width="50%"><img src="docs/akb0048-before.jpg"></td>
+    <td width="50%"><img src="docs/akb0048-after.jpg"></td>
   </tr>
   <tr>
-    <td width="50%"><img src="docs/brave-witches-before.png"></td>
-    <td width="50%"><img src="docs/brave-witches-after.png"></td>
+    <td width="50%"><img src="docs/a-certain-scientific-railgun-before.jpg"></td>
+    <td width="50%"><img src="docs/a-certain-scientific-railgun-after.jpg"></td>
   </tr>
   <tr>
-    <td width="50%"><img src="docs/violet-evergarden-before.png"></td>
-    <td width="50%"><img src="docs/violet-evergarden-after.png"></td>
+    <td width="50%"><img src="docs/macross-frontier-before.jpg"></td>
+    <td width="50%"><img src="docs/macross-frontier-after.jpg"></td>
+  </tr>
+  <tr>
+    <td width="50%"><img src="docs/violet-evergarden-before.jpg"></td>
+    <td width="50%"><img src="docs/violet-evergarden-after.jpg"></td>
   </tr>
 </table>
 
