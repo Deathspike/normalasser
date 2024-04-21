@@ -1,6 +1,6 @@
 # normalasser
 
-Extract `ass` subtitles from `mkv` videos and normalizes them. Unlike text-based subtitles like `srt`, `ass` subtitles have embedded styles that determine their appearance on screen. You have no control over the subtitle size. _Normalasser_ overrides offending styles to ensure a consistent subtitle size, while leaving other styles intact.
+_Normalasser_ extracts ASS subtitles from MKV video files and normalizes their appearance to enhance readability and ensure consistency. Unlike the simpler SRT format, ASS subtitles include embedded styles that dictate font, color, and size, leaving no room for viewer preferences. _Normalasser_ selectively overrides these styles to ensure that subtitles maintain a consistent size across different series and sources, while preserving other stylistic elements such as font choice, color, and positioning. This approach not only improves viewer experience but also upholds the original artistic intent of the subtitles.
 
 # Preview
 
@@ -25,9 +25,10 @@ Extract `ass` subtitles from `mkv` videos and normalizes them. Unlike text-based
 
 # Prerequisites
 
-- [`node`](http://nodejs.org/) >= `18`
-- [`npm`](https://www.npmjs.org/) >= `8`
+- [`node`](http://nodejs.org/) >= `20`
+- [`npm`](https://www.npmjs.org/) >= `10`
 - [`ffmpeg`](https://ffmpeg.org/) >= `6`
+- [`ffprobe`](https://ffmpeg.org/) >= `6`
 
 # Install
 
@@ -37,52 +38,46 @@ npm install -g normalasser
 
 # Usage
 
+To use _Normalasser_ from the command line, simply run the tool followed by the absolute paths to the MKV files or directories containing MKV files. _Normalasser_ will recursively scan directories to find all MKV files to extract and normalize ASS subtitles according to your specifications.
+
 ```
-Usage: normalasser [options] [command]
-
-Extract ass subtitles from mkv videos and normalizes them.
-
-Options:
-  -V, --version              output the version number
-  -h, --help                 display help for command
-
-Commands:
-  parse [options] <path...>  Parse subtitles
-  server [options]           Listen for HTTP events
-  help [command]             display help for command
+normalasser /path/to/video.mkv
 ```
 
-## Parse
+You can also pass multiple paths:
 
-Parse extracts `ass` subtitles from `mkv` videos and normalizes them, or normalizes already extracted `ass` subtitles. When invoked with a folder path, _normalasser_ will recursively scan for `mkv` videos without an extracted `ass` subtitle.
+```
+normalasser /path/to/directory /path/to/video.mkv
+```
 
-### Examples
+Customize _Normalasser_'s behavior with the following options:
 
-A) Extract _English_ `ass` subtitle from a `mkv` video and normalize to a _normal_ size:
+- `--check-ass`: Normalize already extracted ASS subtitles.
+- `--force-mkv`: Extract and normalize even if external ASS subtitles already exist.
+- `--size`: Set the size of the subtitles (`tiny`, `small`, `normal`, `large` or `huge`).
 
-    normalasser parse /path/to/your/video.mkv
+Example with multiple options:
 
-B) Extract _German_ `ass` subtitle from a `mkv` video and normalize to a _normal_ size:
+```
+normalasser --check-ass --size large /path/to/directory
+```
 
-    normalasser parse --language ger /path/to/your/video.mkv
+# Webserver
 
-C) Extract _English_ `ass` subtitle from a `mkv` video and normalize to a _small_ size:
+If no absolute paths are specified when launching _Normalasser_, it operates as a webserver on port `7883`. This mode enables other applications to send POST requests with JSON payloads containing absolute paths to the MKV files or directories containing MKV files.
 
-    normalasser parse --size small /path/to/your/video.mkv
+```
+normalasser
+```
 
-## Server
+To send a request, use any HTTP client capable of sending POST requests with JSON:
 
-Server will run a HTTP server that listens to `POST` requests on port `7883`. Once a request comes in, _normalasser_ runs `parse` on the received path. Requests may be queued up and will execute when the previous requests have finished. The HTTP listener is compatible with _Radarr_ and _Sonarr_ webhooks.
+```
+curl -X POST -d '{"path": "/path/to/video.mkv"}' http://127.0.0.1:7883
+```
+
+_Normalasser_ scans the entire JSON object, extracting absolute paths from any part of its structure, regardless of how it is formatted. This flexibility ensures that _Normalasser_ is compatible with a wide range of input sources and can be integrated with automation tools like _Sonarr_ and _Radarr_ that may send structured data in different formats.
 
 # Contributions
 
-While software contributions are welcome, you can also help with:
-
-- Documentation
-- Helping other people
-- Feature requests
-- Bug reports
-
-# Questions?
-
-Please make an issue if you have questions, wish to request a feature, etc.
+We welcome contributions from the community! If you have suggestions for improvements, bug fixes, or new features, please feel free to submit a pull request or open an issue on our GitHub page. Your feedback and contributions make _Normalasser_ better for everyone.
