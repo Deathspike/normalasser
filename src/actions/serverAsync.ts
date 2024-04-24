@@ -32,16 +32,12 @@ function post(data: Buffer, options: app.Options, res: http.ServerResponse) {
 
 function tryEnqueue(source: any, options: app.Options) {
   if (typeof source === 'object') {
-    for (const key in source) {
-      const value = source[key];
-      if (!value) {
-        continue;
-      } else if (typeof value === 'object') {
-        tryEnqueue(value, options);
-      } else if (typeof value === 'string' && path.isAbsolute(value)) {
-        console.log(`Queueing ${value}`);
-        queue = queue.then(() => app.actions.parseAsync([value], options));
-      }
-    }
+    if (!source) return;
+    const keys = Object.keys(source).filter(x => !/Delete|Remove/i.test(x));
+    keys.forEach(x => tryEnqueue(source[x], options));
+  } else if (typeof source === 'string') {
+    if (!path.isAbsolute(source)) return;
+    console.log(`Queueing ${source}`);
+    queue = queue.then(() => app.actions.parseAsync([source], options));
   }
 }
