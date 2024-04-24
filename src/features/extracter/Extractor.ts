@@ -16,35 +16,35 @@ export class Extractor {
     try {
       await fs.promises.rm(this.outputPath, {recursive: true, force: true});
       await fs.promises.mkdir(this.outputPath, {recursive: true});
-      return await this.extractAsync(processAsync);
+      return await this.execAsync(processAsync);
     } finally {
       await fs.promises.rm(this.outputPath, {recursive: true, force: true});
     }
   }
 
-  private async extractAsync(processAsync: ProcessAsync) {
+  private async execAsync(processAsync: ProcessAsync) {
     if (await ffmpegAsync(this.args)) {
-      const tempNames = await fs.promises.readdir(this.outputPath);
-      const tempPaths = tempNames.map(x => path.join(this.outputPath, x));
-      await Promise.all(tempPaths.map(x => waitAsync(x)));
-      await Promise.all(tempPaths.map(x => processAsync(x)));
-      await this.moveAsync(tempNames);
+      const newNames = await fs.promises.readdir(this.outputPath);
+      const newPaths = newNames.map(x => path.join(this.outputPath, x));
+      await Promise.all(newPaths.map(x => waitAsync(x)));
+      await Promise.all(newPaths.map(x => processAsync(x)));
+      await this.moveAsync(newNames);
       return true;
     } else {
       return false;
     }
   }
 
-  private async moveAsync(tempNames: Array<string>) {
-    for (const tempName of tempNames) {
-      const oldPath = path.join(this.outputPath, tempName);
-      const newPath = path.join(this.basePath, tempName);
+  private async moveAsync(newNames: Array<string>) {
+    for (const newName of newNames) {
+      const oldPath = path.join(this.outputPath, newName);
+      const newPath = path.join(this.basePath, newName);
       await fs.promises.rename(oldPath, newPath);
     }
-    for (const fullPath of await existingAsync(this.baseName, this.basePath)) {
-      const name = path.basename(fullPath);
-      if (tempNames.includes(name)) continue;
-      await fs.promises.rm(fullPath);
+    for (const oldPath of await existingAsync(this.baseName, this.basePath)) {
+      const name = path.basename(oldPath);
+      if (newNames.includes(name)) continue;
+      await fs.promises.rm(oldPath);
     }
   }
 }
