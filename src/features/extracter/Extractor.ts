@@ -2,7 +2,6 @@ import * as fs from 'node:fs';
 import * as path from 'node:path';
 import {existingAsync} from './utils/existingAsync';
 import {ffmpegAsync} from './utils/ffmpegAsync';
-import {waitAsync} from './utils/waitAsync';
 
 export class Extractor {
   constructor(
@@ -26,7 +25,6 @@ export class Extractor {
     if (await ffmpegAsync(this.args)) {
       const newNames = await fs.promises.readdir(this.outputPath);
       const newPaths = newNames.map(x => path.join(this.outputPath, x));
-      await Promise.all(newPaths.map(x => waitAsync(x)));
       await Promise.all(newPaths.map(x => processAsync(x)));
       await this.moveAsync(newNames);
       return true;

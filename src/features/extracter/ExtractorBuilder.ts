@@ -1,6 +1,7 @@
 import * as app from '.';
 import * as path from 'node:path';
 import {ffprobeAsync} from './utils/ffprobeAsync';
+import {waitAsync} from './utils/waitAsync';
 
 export class ExtractorBuilder {
   private readonly args: Array<string>;
@@ -12,6 +13,7 @@ export class ExtractorBuilder {
   }
 
   async buildAsync() {
+    await waitAsync(this.fullPath);
     const {dir, name} = path.parse(this.fullPath);
     const metadata = await ffprobeAsync(this.fullPath);
     const outputPath = path.join(dir, `.${name}.normalasser`);

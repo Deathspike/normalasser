@@ -1,17 +1,18 @@
 import * as fs from 'node:fs';
+const maximumWaitTime = 300000;
+const stableThreshold = 15000;
 
 export async function waitAsync(fullPath: string) {
-  let oldSize = -1;
-  for (let i = 0; i < 10; i++) {
-    const newSize = await fs.promises
-      .stat(fullPath)
-      .then(x => x.size)
-      .catch(() => 0);
-    if (!newSize || oldSize !== newSize) {
-      oldSize = newSize;
+  const endTime = Date.now() + maximumWaitTime;
+  while (true) {
+    const stat = await fs.promises.stat(fullPath).catch(() => {});
+    const currentTime = Date.now();
+    if (stat && stat.mtimeMs + stableThreshold < currentTime) {
+      break;
+    } else if (currentTime < endTime) {
       await new Promise(x => setTimeout(x, 1000));
     } else {
-      break;
+      throw new Error(`File not stable: ${fullPath}`);
     }
   }
 }
