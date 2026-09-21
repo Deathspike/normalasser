@@ -1,4 +1,4 @@
-import * as app from '.';
+import * as app from ".";
 
 export class Tree {
   private readonly lines = new Array<Object>();
@@ -6,7 +6,7 @@ export class Tree {
   private format?: app.KeyListPair;
 
   constructor(text: string) {
-    this.separator = text.match(/\r?\n/)?.[0] ?? '\n';
+    this.separator = text.match(/\r?\n/)?.[0] ?? "\n";
     this.parse(text.split(this.separator));
     delete this.format;
   }
@@ -91,5 +91,5 @@ enum Mode {
   Unknown,
   Info,
   Styles,
-  Events
+  Events,
 }

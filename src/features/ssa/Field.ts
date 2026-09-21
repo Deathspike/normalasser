@@ -4,13 +4,14 @@ export class Field {
 
   constructor(value?: string) {
     const match = value?.match(/^(\s*)(.+?)(\s*)$/);
-    this.prefix = (match && match[1]) ?? '';
-    this.suffix = (match && match[3]) ?? '';
-    this.text = (match && match[2]) ?? '';
+    this.prefix = (match && match[1]) ?? "";
+    this.suffix = (match && match[3]) ?? "";
+    this.text = (match && match[2]) ?? "";
   }
 
   is(value: string) {
-    return !this.text.localeCompare(value, undefined, {sensitivity: 'accent'});
+    const options = { sensitivity: "accent" } as const;
+    return !this.text.localeCompare(value, undefined, options);
   }
 
   toString() {

@@ -1,5 +1,5 @@
-import {getDurations} from './getDurations';
-import {ssa} from '../..';
+import { getDurations } from "./getDurations";
+import { ssa } from "../..";
 
 export function getPrimaryStyle(tree: ssa.Tree) {
   const durations = getDurations(tree);
@@ -11,9 +11,9 @@ function get(tree: ssa.Tree, durations: Map<string, number>) {
     .sort((a, b) => b[1] - a[1])
     .shift()?.[0];
   const primaryStyle = primaryName
-    ? tree.styles.find(x => x.get('Name')?.is(primaryName))
+    ? tree.styles.find((x) => x.get("Name")?.is(primaryName))
     : undefined;
   return primaryStyle
     ? primaryStyle
-    : tree.styles.find(x => x.get('Name')?.is('Default'));
+    : tree.styles.find((x) => x.get("Name")?.is("Default"));
 }

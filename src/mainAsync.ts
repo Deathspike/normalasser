@@ -1,5 +1,5 @@
-import * as app from '.';
-import * as path from 'node:path';
+import * as app from ".";
+import * as path from "node:path";
 
 export async function mainAsync() {
   const fullPaths: Array<string> = [];
@@ -17,11 +17,11 @@ function fill(fullPaths: Array<string>, options: app.Options) {
       continue;
     } else if (path.isAbsolute(arg)) {
       fullPaths.push(arg);
-    } else if (arg === '--check-ass') {
+    } else if (arg === "--check-ass") {
       options.checkAss = true;
-    } else if (arg === '--force-mkv') {
+    } else if (arg === "--force-mkv") {
       options.forceMkv = true;
-    } else if (arg === '--size') {
+    } else if (arg === "--size") {
       const size = process.argv[i + 1];
       if (size && validate(size)) options.size = size;
       i++;
@@ -30,6 +30,6 @@ function fill(fullPaths: Array<string>, options: app.Options) {
 }
 
 function validate(size: string): size is app.features.normalizer.Size {
-  const choices = ['tiny', 'small', 'normal', 'large', 'huge'];
+  const choices = ["tiny", "small", "normal", "large", "huge"];
   return choices.includes(size);
 }
