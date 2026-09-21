@@ -1,4 +1,4 @@
-import * as app from '.';
+import * as app from ".";
 
 export class ExtractorTracker {
   private readonly values: Record<string, Record<string, number>> = {};
@@ -6,15 +6,15 @@ export class ExtractorTracker {
   add(extension: string, stream: app.MetadataStream) {
     const language = this.get(stream);
     const languageId = this.set(extension, language);
-    const languageSuffix = languageId ? `.${languageId}` : '';
-    return '.' + language + languageSuffix + extension;
+    const languageSuffix = languageId ? `.${languageId}` : "";
+    return "." + language + languageSuffix + extension;
   }
 
   private get(stream: app.MetadataStream) {
-    const language = getTag(stream, 'language') ?? '';
-    const value = language.toLowerCase().replace(/[^a-z]/g, '');
+    const language = getTag(stream, "language") ?? "";
+    const value = language.toLowerCase().replace(/[^a-z]/g, "");
     const threeLetterCode = value.substring(0, 3);
-    return /^(mis|und|zxx)$/i.test(threeLetterCode) ? '' : threeLetterCode;
+    return /^(mis|und|zxx)$/i.test(threeLetterCode) ? "" : threeLetterCode;
   }
 
   private set(extension: string, language: string) {

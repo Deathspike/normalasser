@@ -1,9 +1,9 @@
-import * as app from '.';
-import {split} from './utils/split';
+import * as app from ".";
+import { split } from "./utils/split";
 
 export class KeyValuePair {
   constructor(value: string) {
-    const pair = split(value, ':', 2);
+    const pair = split(value, ":", 2);
     this.key = new app.Field(pair[0]);
     this.value = new app.Field(pair[1]);
   }

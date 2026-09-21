@@ -1,13 +1,13 @@
-import * as app from '.';
+import * as app from ".";
 
 export class TreePair {
   constructor(
     readonly format: app.KeyListPair,
-    readonly value: app.KeyListPair
+    readonly value: app.KeyListPair,
   ) {}
 
   get(name: string) {
-    const index = this.format.list.findIndex(x => x.is(name));
+    const index = this.format.list.findIndex((x) => x.is(name));
     const field = this.value.list[index];
     return field;
   }

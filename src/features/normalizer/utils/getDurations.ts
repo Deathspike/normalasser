@@ -1,4 +1,4 @@
-import {ssa} from '../..';
+import { ssa } from "../..";
 
 export function getDurations(tree: ssa.Tree) {
   const entries = new Map<string, Entry>();
@@ -14,15 +14,15 @@ function get(entries: Map<string, Entry>) {
 
 function fill(tree: ssa.Tree, entries: Map<string, Entry>) {
   const events = tree.events
-    .filter(x => x.value.key.is('Dialogue'))
-    .sort((a, b) => a.getTime('Start') - b.getTime('Start'));
+    .filter((x) => x.value.key.is("Dialogue"))
+    .sort((a, b) => a.getTime("Start") - b.getTime("Start"));
   for (const event of events) {
-    const style = event.getString('Style') ?? 'Default';
-    const previous = entries.get(style) ?? {duration: 0, end: 0};
-    const start = Math.max(event.getTime('Start'), previous.end);
-    const end = Math.max(event.getTime('End'), start);
+    const style = event.getString("Style") ?? "Default";
+    const previous = entries.get(style) ?? { duration: 0, end: 0 };
+    const start = Math.max(event.getTime("Start"), previous.end);
+    const end = Math.max(event.getTime("End"), start);
     const duration = previous.duration + (end - start);
-    entries.set(style, {end, duration});
+    entries.set(style, { end, duration });
   }
 }
 
