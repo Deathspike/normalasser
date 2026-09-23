@@ -2,13 +2,11 @@
   "version": "2.0.0",
   "tasks": [
     {
-      "group": { "isDefault": true, "kind": "build" },
+      "command": "npm run tsc:watch",
       "isBackground": true,
-      "label": "TypeScript",
-      "option": "watch",
-      "problemMatcher": ["$tsc-watch"],
-      "tsconfig": "tsconfig.json",
-      "type": "typescript"
+      "label": "tsc:watch",
+      "type": "shell",
+      "problemMatcher": ["$tsc-watch"]
     }
   ]
 }

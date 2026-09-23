@@ -1,0 +1,11 @@
+{
+  "extends": [
+    "./jsconfig.config.check.json",
+    "./jsconfig.config.lang.json",
+    "./jsconfig.config.src.json"
+  ],
+  "compilerOptions": {
+    "maxNodeModuleJsDepth": 0,
+    "types": ["node"]
+  }
+}

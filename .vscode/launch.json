@@ -2,13 +2,12 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "args": ["bin/normalasser"],
-      "name": "Launch Program",
-      "outFiles": ["${workspaceFolder}/dist/**/*"],
+      "name": "Launch",
       "outputCapture": "std",
-      "preLaunchTask": "TypeScript",
+      "preLaunchTask": "tsc:watch",
       "request": "launch",
-      "type": "node"
+      "type": "node",
+      "args": ["bin/cli.js"]
     }
   ]
 }

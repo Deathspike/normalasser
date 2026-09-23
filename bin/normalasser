@@ -1,4 +1,0 @@
-#!/usr/bin/env node
-const { join } = require("path");
-const { mainAsync } = require(join(__dirname, ".."));
-mainAsync();
