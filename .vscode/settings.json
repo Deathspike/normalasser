@@ -2,8 +2,6 @@
   "editor.defaultFormatter": "esbenp.prettier-vscode",
   "editor.formatOnSave": true,
   "editor.tabSize": 2,
-  "files.exclude": {
-    "dist": true,
-    "node_modules": true
-  }
+  "explorer.excludeGitIgnore": true,
+  "explorer.sortOrderLexicographicOptions": "upper"
 }

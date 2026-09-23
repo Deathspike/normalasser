@@ -4,28 +4,29 @@
   "description": "Extracts ASS subtitles from MKV video files and normalizes their appearance to enhance readability and ensure consistency.",
   "license": "MIT",
   "repository": "git://github.com/Deathspike/normalasser",
+  "type": "module",
   "version": "3.0.2",
-  "main": "dist",
-  "types": "dist",
+  "main": "./src/index.js",
   "bin": {
-    "normalasser": "./bin/normalasser"
+    "normalasser": "./bin/cli.js"
   },
   "engines": {
-    "node": ">= 20.0.0",
+    "node": ">= 24.0.0",
     "npm": ">= 10.0.0"
   },
   "devDependencies": {
-    "@types/node": "20.12.7",
+    "@types/node": "24.6.2",
     "pre-commit": "1.2.2",
-    "prettier": "3.2.5",
-    "typescript": "5.4.5"
+    "prettier": "3.9.8",
+    "prettier-plugin-jsdoc": "1.8.1",
+    "typescript": "6.0.3"
   },
   "scripts": {
     "prepack": "npm run tsc:build",
     "prettier:check": "prettier --check .",
     "prettier:write": "prettier --write .",
     "test": "npm run prettier:check && npm run tsc:build",
-    "tsc:build": "tsc",
-    "tsc:watch": "tsc --watch"
+    "tsc:build": "tsc --project jsconfig.json",
+    "tsc:watch": "tsc --project jsconfig.json --watch"
   }
 }
