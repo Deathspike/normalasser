@@ -1,12 +1,11 @@
-import * as app from "../index.js";
-import * as childProcess from "node:child_process";
+import childProcess from "node:child_process";
 
 /** @param {string} fullPath */
 export async function ffprobeAsync(fullPath) {
   const args = ["-v", "quiet", "-print_format", "json", "-show_streams"];
   const result = await spawnAsync("ffprobe", args.concat(fullPath));
   const text = Buffer.concat(result).toString("utf-8");
-  return new app.Metadata(JSON.parse(text));
+  return JSON.parse(text);
 }
 
 /**

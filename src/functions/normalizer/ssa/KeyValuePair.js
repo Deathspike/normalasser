@@ -1,12 +1,12 @@
-import * as app from "./index.js";
+import { Field } from "./Field.js";
 import { split } from "./utils/split.js";
 
 export class KeyValuePair {
   /** @param {string} value */
   constructor(value) {
     const pair = split(value, ":", 2);
-    this.key = new app.Field(pair[0]);
-    this.value = new app.Field(pair[1]);
+    this.key = new Field(pair[0]);
+    this.value = new Field(pair[1]);
   }
 
   toString() {
@@ -15,8 +15,8 @@ export class KeyValuePair {
     return value ? `${key}:${value}` : key;
   }
 
-  /** @readonly @type {app.Field} */
+  /** @readonly @type {Field} */
   key;
-  /** @readonly @type {app.Field} */
+  /** @readonly @type {Field} */
   value;
 }

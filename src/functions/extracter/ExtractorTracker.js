@@ -1,4 +1,4 @@
-import * as app from "./index.js";
+import { MetadataStream } from "./MetadataStream.js";
 
 export class ExtractorTracker {
   /** @readonly @type {Record<string, Record<string, number>>} */
@@ -10,7 +10,7 @@ export class ExtractorTracker {
 
   /**
    * @param {string} extension
-   * @param {app.MetadataStream} stream
+   * @param {MetadataStream} stream
    */
   add(extension, stream) {
     const language = this.#get(stream);
@@ -19,7 +19,7 @@ export class ExtractorTracker {
     return "." + language + languageSuffix + extension;
   }
 
-  /** @param {app.MetadataStream} stream */
+  /** @param {MetadataStream} stream */
   #get(stream) {
     const language = getTag(stream, "language") ?? "";
     const value = language.toLowerCase().replace(/[^a-z]/g, "");
@@ -40,7 +40,7 @@ export class ExtractorTracker {
 }
 
 /**
- * @param {app.MetadataStream} stream
+ * @param {MetadataStream} stream
  * @param {string} name
  */
 function getTag(stream, name) {

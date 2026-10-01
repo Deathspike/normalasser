@@ -1,4 +1,4 @@
-import * as app from "./index.js";
+import { Field } from "./Field.js";
 import { split } from "./utils/split.js";
 
 export class KeyListPair {
@@ -8,8 +8,8 @@ export class KeyListPair {
    */
   constructor(value, limit) {
     const pair = split(value, ":", 2);
-    this.key = new app.Field(pair[0]);
-    this.list = split(pair[1] ?? "", ",", limit).map((x) => new app.Field(x));
+    this.key = new Field(pair[0]);
+    this.list = split(pair[1] ?? "", ",", limit).map((x) => new Field(x));
   }
 
   toString() {
@@ -18,8 +18,8 @@ export class KeyListPair {
     return list ? `${key}:${list}` : key;
   }
 
-  /** @readonly @type {app.Field} */
+  /** @readonly @type {Field} */
   key;
-  /** @readonly @type {Array<app.Field>} */
+  /** @readonly @type {Array<Field>} */
   list;
 }

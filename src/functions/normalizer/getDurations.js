@@ -1,6 +1,6 @@
-import { ssa } from "../../index.js";
+import { Tree } from "./ssa/Tree.js";
 
-/** @param {ssa.Tree} tree */
+/** @param {Tree} tree */
 export function getDurations(tree) {
   /** @type {Map<string, { duration: number; end: number }>} */
   const entries = new Map();

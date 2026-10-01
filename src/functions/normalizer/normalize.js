@@ -1,12 +1,12 @@
-import { getPrimaryStyle } from "./utils/getPrimaryStyle.js";
-import { ssa } from "../index.js";
+import { getPrimaryStyle } from "./getPrimaryStyle.js";
+import { Tree } from "./ssa/Tree.js";
 
 /**
  * @param {string} subtitle
  * @param {number} [size]
  */
 export function normalize(subtitle, size) {
-  const tree = new ssa.Tree(subtitle);
+  const tree = new Tree(subtitle);
   const primary = getPrimaryStyle(tree);
   const primaryFontSize = primary?.getFloat("FontSize");
   const primaryMargin = primary?.getFloat("MarginV");
