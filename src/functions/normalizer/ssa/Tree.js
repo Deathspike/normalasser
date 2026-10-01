@@ -1,11 +1,13 @@
-import * as app from "./index.js";
+import { KeyListPair } from "./KeyListPair.js";
+import { KeyValuePair } from "./KeyValuePair.js";
+import { TreePair } from "./TreePair.js";
 
 export class Tree {
   /** @readonly @type {Array<Object>} */
   #lines;
   /** @readonly @type {string} */
   #separator;
-  /** @type {app.KeyListPair | undefined} */
+  /** @type {KeyListPair | undefined} */
   #format;
 
   /** @param {string} text */
@@ -19,11 +21,11 @@ export class Tree {
     return this.#lines.join(this.#separator);
   }
 
-  /** @readonly @type {Array<app.KeyValuePair>} */
+  /** @readonly @type {Array<KeyValuePair>} */
   info = [];
-  /** @readonly @type {Array<app.TreePair>} */
+  /** @readonly @type {Array<TreePair>} */
   styles = [];
-  /** @readonly @type {Array<app.TreePair>} */
+  /** @readonly @type {Array<TreePair>} */
   events = [];
 
   /** @param {string[]} lines */
@@ -61,7 +63,7 @@ export class Tree {
   /** @param {string} line */
   #parseInfo(line) {
     if (line.includes(":")) {
-      const info = new app.KeyValuePair(line);
+      const info = new KeyValuePair(line);
       this.info.push(info);
       this.#lines.push(info);
     } else {
@@ -72,11 +74,11 @@ export class Tree {
   /** @param {string} line */
   #parseEvent(line) {
     if (/^\s*Format\s*:/i.test(line)) {
-      this.#format = new app.KeyListPair(line);
+      this.#format = new KeyListPair(line);
       this.#lines.push(this.#format);
     } else if (/^\s*(?:Comment|Dialogue)\s*:/i.test(line) && this.#format) {
-      const event = new app.KeyListPair(line, this.#format.list.length);
-      this.events.push(new app.TreePair(this.#format, event));
+      const event = new KeyListPair(line, this.#format.list.length);
+      this.events.push(new TreePair(this.#format, event));
       this.#lines.push(event);
     } else {
       this.#lines.push(line);
@@ -86,11 +88,11 @@ export class Tree {
   /** @param {string} line */
   #parseStyle(line) {
     if (/^\s*Format\s*:/i.test(line)) {
-      this.#format = new app.KeyListPair(line);
+      this.#format = new KeyListPair(line);
       this.#lines.push(this.#format);
     } else if (/^\s*Style\s*:/i.test(line) && this.#format) {
-      const style = new app.KeyListPair(line, this.#format.list.length);
-      this.styles.push(new app.TreePair(this.#format, style));
+      const style = new KeyListPair(line, this.#format.list.length);
+      this.styles.push(new TreePair(this.#format, style));
       this.#lines.push(style);
     } else {
       this.#lines.push(line);

@@ -1,13 +1,13 @@
-import * as app from "./index.js";
+import { MetadataStream } from "./MetadataStream.js";
 
 export class Metadata {
   /** @param {Partial<Metadata>} metadata */
   constructor(metadata) {
     this.streams = metadata.streams?.map(
-      (stream) => new app.MetadataStream(stream),
+      (stream) => new MetadataStream(stream),
     );
   }
 
-  /** @readonly @type {app.MetadataStream[] | undefined} */
+  /** @readonly @type {MetadataStream[] | undefined} */
   streams;
 }

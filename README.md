@@ -58,12 +58,12 @@ Customize _Normalasser_'s behavior with the following options:
 
 - `--check-ass`: Normalize already extracted ASS subtitles.
 - `--force-mkv`: Extract and normalize even if external ASS subtitles already exist.
-- `--size`: Set the size of the subtitles (`tiny`, `small`, `normal`, `large` or `huge`).
+- `--size <number>`: Set the size of the subtitles (defaults to `16`).
 
 Example with multiple options:
 
 ```
-normalasser --check-ass --size large /path/to/directory
+normalasser --check-ass --size 20 /path/to/directory
 ```
 
 # Webserver

@@ -1,4 +1,4 @@
-import * as fs from "node:fs";
+import fs from "node:fs";
 const maximumWaitTime = 300000;
 const stableThreshold = 15000;
 

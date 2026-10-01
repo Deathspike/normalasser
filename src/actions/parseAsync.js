@@ -1,11 +1,11 @@
-import * as app from "../index.js";
-import * as fs from "node:fs";
-import * as path from "node:path";
-import { hasSubtitle } from "./utils/hasSubtitle.js";
+import fs from "node:fs";
+import path from "node:path";
+import * as normalasser from "../index.js";
+import { Options } from "./Options.js";
 
 /**
  * @param {string[]} paths
- * @param {app.Options} [options]
+ * @param {Options} [options]
  */
 export async function parseAsync(paths, options) {
   for (const fullPath of paths) {
@@ -15,9 +15,10 @@ export async function parseAsync(paths, options) {
 
 /**
  * @param {string} fullPath
- * @param {app.Options} [options]
+ * @param {Options} [options]
  */
 async function checkAsync(fullPath, options) {
+  const size = options?.size;
   const stats = await fs.promises.stat(fullPath).catch(() => {});
   if (!stats) {
     console.log(`Rejected ${fullPath}`);
@@ -27,20 +28,19 @@ async function checkAsync(fullPath, options) {
     console.log(`Finished ${fullPath}`);
   } else if (stats.isFile() && fullPath.endsWith(".ass")) {
     console.log(`Fetching ${fullPath}`);
-    await traceAsync(fullPath, app.normalizeAsync(fullPath, options?.size));
+    await traceAsync(fullPath, normalasser.normalizeAsync(fullPath, size));
   } else if (stats.isFile() && fullPath.endsWith(".mkv")) {
     console.log(`Fetching ${fullPath}`);
-    await traceAsync(fullPath, app.extractAsync(fullPath, options?.size));
+    await traceAsync(fullPath, normalasser.extractAsync(fullPath, size));
   }
 }
 
 /**
  * @param {string} fullPath
- * @param {app.Options} [options]
+ * @param {Options} [options]
  */
 async function directoryAsync(fullPath, options) {
   const childNames = await fs.promises.readdir(fullPath).catch(() => []);
-  const childSet = new Set(childNames);
   for (const childName of childNames) {
     const childPath = path.join(fullPath, childName);
     const stats = await fs.promises.stat(childPath).catch(() => {});
@@ -50,10 +50,23 @@ async function directoryAsync(fullPath, options) {
       if (!options?.checkAss) continue;
       await checkAsync(childPath, options);
     } else if (stats?.isFile() && childName.endsWith(".mkv")) {
-      if (!options?.forceMkv && hasSubtitle(childName, childSet)) continue;
+      if (!options?.forceMkv && hasSubtitle(childName, childNames)) continue;
       await checkAsync(childPath, options);
     }
   }
+}
+
+/**
+ * @param {string} videoName
+ * @param {string[]} otherNames
+ */
+export function hasSubtitle(videoName, otherNames) {
+  const { name } = path.parse(videoName);
+  return otherNames.some((otherName) => {
+    const isSubtitle = otherName.endsWith(".ass");
+    const matchesVideoName = otherName.startsWith(`${name}.`);
+    return isSubtitle && matchesVideoName;
+  });
 }
 
 /**

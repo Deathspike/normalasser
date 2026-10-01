@@ -1,7 +1,10 @@
-import * as app from "./index.js";
-import * as path from "node:path";
+import path from "node:path";
 import { ffprobeAsync } from "./utils/ffprobeAsync.js";
 import { waitAsync } from "./utils/waitAsync.js";
+import { Extractor } from "./Extractor.js";
+import { ExtractorTracker } from "./ExtractorTracker.js";
+import { Metadata } from "./Metadata.js";
+import { MetadataStream } from "./MetadataStream.js";
 
 export class ExtractorBuilder {
   /** @readonly @type {string[]} */
@@ -18,14 +21,14 @@ export class ExtractorBuilder {
   async buildAsync() {
     await waitAsync(this.#fullPath);
     const { dir, name } = path.parse(this.#fullPath);
-    const metadata = await ffprobeAsync(this.#fullPath);
+    const metadata = new Metadata(await ffprobeAsync(this.#fullPath));
     const outputPath = path.join(dir, `.${name}.normalasser`);
     const streamPath = path.join(outputPath, name);
     this.#parseStreams(streamPath, this.#getStreams(metadata.streams));
-    return new app.Extractor(this.#args, name, dir, outputPath);
+    return new Extractor(this.#args, name, dir, outputPath);
   }
 
-  /** @param {app.MetadataStream[]} streams */
+  /** @param {MetadataStream[]} streams */
   #getStreams(streams = []) {
     return streams.slice().sort((a, b) => {
       const ad = a.disposition?.["default"] ?? 0;
@@ -38,10 +41,10 @@ export class ExtractorBuilder {
 
   /**
    * @param {string} streamPath
-   * @param {app.MetadataStream[]} streams
+   * @param {MetadataStream[]} streams
    */
   #parseStreams(streamPath, streams) {
-    const tracker = new app.ExtractorTracker();
+    const tracker = new ExtractorTracker();
     for (const stream of streams) {
       if (stream.codec_type === "subtitle" && stream.codec_name === "ass") {
         this.#args.push("-map", `0:${stream.index}`);

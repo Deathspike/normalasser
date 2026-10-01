@@ -1,10 +1,11 @@
-import * as app from "../index.js";
-import * as http from "node:http";
-import * as path from "node:path";
+import http from "node:http";
+import path from "node:path";
 import packageData from "../../package.json" with { type: "json" };
+import { parseAsync } from "./parseAsync.js";
+import { Options } from "./Options.js";
 let queue = Promise.resolve();
 
-/** @param {app.Options} options */
+/** @param {Options} options */
 export async function serverAsync(options) {
   const server = http.createServer((req, res) => {
     if (req.method === "POST") {
@@ -24,14 +25,15 @@ export async function serverAsync(options) {
 
 /**
  * @param {Buffer} data
- * @param {app.Options} options
+ * @param {Options} options
  * @param {http.ServerResponse} res
  */
 function post(data, options, res) {
   try {
     tryEnqueue(JSON.parse(data.toString("utf-8")), options);
+    res.writeHead(204);
   } catch (err) {
-    res.writeHead(500);
+    res.writeHead(400);
   } finally {
     res.end();
   }
@@ -39,10 +41,10 @@ function post(data, options, res) {
 
 /**
  * @param {unknown} source
- * @param {app.Options} options
+ * @param {Options} options
  */
 function tryEnqueue(source, options) {
-  if (typeof source === "object" && source) {
+  if (typeof source === "object" && source !== null) {
     for (const [key, value] of Object.entries(source)) {
       if (/Delete|Remove/i.test(key)) continue;
       tryEnqueue(value, options);
@@ -50,6 +52,6 @@ function tryEnqueue(source, options) {
   } else if (typeof source === "string") {
     if (!path.isAbsolute(source)) return;
     console.log(`Queueing ${source}`);
-    queue = queue.then(() => app.actions.parseAsync([source], options));
+    queue = queue.then(() => parseAsync([source], options));
   }
 }

@@ -1,18 +1,18 @@
-import * as app from "./index.js";
+import { KeyListPair } from "./KeyListPair.js";
 
 export class TreePair {
   /**
-   * @param {app.KeyListPair} format
-   * @param {app.KeyListPair} value
+   * @param {KeyListPair} format
+   * @param {KeyListPair} value
    */
   constructor(format, value) {
     this.format = format;
     this.value = value;
   }
 
-  /** @readonly @type {app.KeyListPair} */
+  /** @readonly @type {KeyListPair} */
   format;
-  /** @readonly @type {app.KeyListPair} */
+  /** @readonly @type {KeyListPair} */
   value;
 
   /** @param {string} name */

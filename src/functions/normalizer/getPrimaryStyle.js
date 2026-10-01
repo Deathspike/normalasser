@@ -1,7 +1,7 @@
 import { getDurations } from "./getDurations.js";
-import { ssa } from "../../index.js";
+import { Tree } from "./ssa/Tree.js";
 
-/** @param {ssa.Tree} tree */
+/** @param {Tree} tree */
 export function getPrimaryStyle(tree) {
   const primaryName = Array.from(getDurations(tree).entries())
     .sort((a, b) => b[1] - a[1])
