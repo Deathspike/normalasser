@@ -13,10 +13,10 @@ export class Metadata {
     );
   }
 
-  /** @param {string} fullPath */
-  static async ffprobeAsync(fullPath) {
+  /** @param {string} filePath */
+  static async ffprobeAsync(filePath) {
     const args = ["-v", "quiet", "-print_format", "json", "-show_streams"];
-    const result = await spawnAsync("ffprobe", args.concat(fullPath));
+    const result = await spawnAsync("ffprobe", args.concat(filePath));
     const text = result.toString("utf8");
     return new Metadata(JSON.parse(text));
   }

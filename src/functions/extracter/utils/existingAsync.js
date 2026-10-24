@@ -7,11 +7,11 @@ import path from "node:path";
  */
 export async function existingAsync(baseName, basePath) {
   const names = await fs.promises.readdir(basePath);
-  const fullPaths = [];
+  const filePaths = [];
   for (const name of names) {
     if (!name.endsWith(".ass")) continue;
     if (!name.startsWith(`${baseName}.`)) continue;
-    fullPaths.push(path.join(basePath, name));
+    filePaths.push(path.join(basePath, name));
   }
-  return fullPaths;
+  return filePaths;
 }

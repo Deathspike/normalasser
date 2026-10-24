@@ -10,18 +10,18 @@ export class ExtractorBuilder {
   /** @readonly @type {string[]} */
   #args;
   /** @readonly @type {string} */
-  #fullPath;
+  #filePath;
 
-  /** @param {string} fullPath */
-  constructor(fullPath) {
-    this.#args = ["-y", "-i", fullPath];
-    this.#fullPath = fullPath;
+  /** @param {string} filePath */
+  constructor(filePath) {
+    this.#args = ["-y", "-i", filePath];
+    this.#filePath = filePath;
   }
 
   async buildAsync() {
-    await waitAsync(this.#fullPath);
-    const { dir, name } = path.parse(this.#fullPath);
-    const metadata = await Metadata.ffprobeAsync(this.#fullPath);
+    await waitAsync(this.#filePath);
+    const { dir, name } = path.parse(this.#filePath);
+    const metadata = await Metadata.ffprobeAsync(this.#filePath);
     const outputPath = path.join(dir, `.${name}.normalasser`);
     const streamPath = path.join(outputPath, name);
     this.#parseStreams(streamPath, this.#getStreams(metadata.streams));
