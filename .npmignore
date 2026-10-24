@@ -1,4 +1,8 @@
-/Dockerfile
-/docs
-/src
-/*.*
+.github/
+.prettierrc
+.vscode/
+docker.js
+Dockerfile
+docs/
+eslint.*
+jsconfig.*

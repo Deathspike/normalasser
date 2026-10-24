@@ -1,6 +1,11 @@
 import { KeyListPair } from "./KeyListPair.js";
 
 export class TreePair {
+  /** @readonly @type {KeyListPair} */
+  format;
+  /** @readonly @type {KeyListPair} */
+  value;
+
   /**
    * @param {KeyListPair} format
    * @param {KeyListPair} value
@@ -10,14 +15,9 @@ export class TreePair {
     this.value = value;
   }
 
-  /** @readonly @type {KeyListPair} */
-  format;
-  /** @readonly @type {KeyListPair} */
-  value;
-
   /** @param {string} name */
   get(name) {
-    const index = this.format.list.findIndex((x) => x.is(name));
+    const index = this.format.list.findIndex((format) => format.is(name));
     const field = this.value.list[index];
     return field;
   }
@@ -25,7 +25,7 @@ export class TreePair {
   /** @param {string} name */
   getFloat(name) {
     const match = this.getString(name)?.match(/^(\d+(\.\d*)?)$/);
-    const value = match?.[1] ? parseFloat(match[1]) : 0;
+    const value = match?.[1] ? Number(match[1]) : 0;
     return value;
   }
 
@@ -39,19 +39,19 @@ export class TreePair {
   /** @param {string} name */
   getTime(name) {
     const match = this.getString(name)?.match(/^(\d+):(\d+):(\d+(\.\d*)?)$/);
-    const h = match?.[1] ? parseFloat(match[1]) * 3600 : 0;
-    const m = match?.[2] ? parseFloat(match[2]) * 60 : 0;
-    const s = match?.[3] ? parseFloat(match[3]) : 0;
-    return h + m + s;
+    const hours = match?.[1] ? Number(match[1]) * 3600 : 0;
+    const minutes = match?.[2] ? Number(match[2]) * 60 : 0;
+    const seconds = match?.[3] ? Number(match[3]) : 0;
+    return hours + minutes + seconds;
   }
 
   /**
    * @param {string} name
-   * @param {Object} value
+   * @param {string} value
    */
   set(name, value) {
     const field = this.get(name);
     if (!field) return;
-    field.text = value.toString();
+    field.text = value;
   }
 }

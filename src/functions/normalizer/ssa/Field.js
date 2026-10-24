@@ -1,4 +1,7 @@
 export class Field {
+  /** @type {string} */
+  text;
+
   /** @readonly @type {string} */
   #prefix;
   /** @readonly @type {string} */
@@ -22,7 +25,4 @@ export class Field {
   toString() {
     return this.#prefix + this.text + this.#suffix;
   }
-
-  /** @type {string} */
-  text;
 }

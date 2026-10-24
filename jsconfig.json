@@ -5,7 +5,6 @@
     "./jsconfig.config.src.json"
   ],
   "compilerOptions": {
-    "maxNodeModuleJsDepth": 0,
-    "types": ["node"]
+    "maxNodeModuleJsDepth": 0
   }
 }

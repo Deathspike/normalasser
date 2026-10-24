@@ -1,32 +1,39 @@
 {
+  "main": "index.js",
   "name": "normalasser",
-  "author": "Deathspike",
-  "description": "Extracts ASS subtitles from MKV video files and normalizes their appearance to enhance readability and ensure consistency.",
-  "license": "MIT",
   "repository": "git://github.com/Deathspike/normalasser",
   "type": "module",
-  "version": "3.0.2",
-  "main": "./src/index.js",
   "bin": {
     "normalasser": "./bin/cli.js"
   },
-  "engines": {
-    "node": ">= 24.0.0",
-    "npm": ">= 10.0.0"
-  },
   "devDependencies": {
-    "@types/node": "24.6.2",
-    "pre-commit": "1.2.2",
-    "prettier": "3.9.8",
+    "@types/node": "24.19.2",
+    "eslint": "10.13.0",
+    "eslint-config-porcupine": "0.4.0",
+    "prettier": "3.9.10",
     "prettier-plugin-jsdoc": "1.8.1",
     "typescript": "6.0.3"
   },
+  "devEngines": {
+    "packageManager": {
+      "name": "npm",
+      "onFail": "error",
+      "version": ">= 10"
+    },
+    "runtime": {
+      "name": "node",
+      "onFail": "error",
+      "version": ">= 24"
+    }
+  },
   "scripts": {
-    "prepack": "npm run tsc:build",
-    "prettier:check": "prettier --check .",
-    "prettier:write": "prettier --write .",
-    "test": "npm run prettier:check && npm run tsc:build",
-    "tsc:build": "tsc --project jsconfig.json",
-    "tsc:watch": "tsc --project jsconfig.json --watch"
+    "format:check": "prettier --check .",
+    "format:fix": "prettier --write .",
+    "lint:check": "eslint --max-warnings 0",
+    "lint:fix": "eslint --fix",
+    "prepack": "tsc index.js --allowJs --declaration --emitDeclarationOnly --removeComments --strict --skipLibCheck",
+    "test": "npm run types:check && npm run lint:check && npm run format:check",
+    "types:check": "tsc --project jsconfig.json",
+    "types:watch": "tsc --project jsconfig.json --watch"
   }
 }
