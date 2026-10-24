@@ -1,24 +1,10 @@
-# ========================================
-# Build
-# ========================================
-FROM node:24-alpine AS build
+FROM node:24.21.0-alpine
 WORKDIR /app
-COPY . .
-RUN npm install && npm run prepack
-
-# ========================================
-# Runtime
-# ========================================
-FROM node:24-alpine
-WORKDIR /app
-COPY --from=mwader/static-ffmpeg:6.1.1 /ffmpeg /usr/local/bin
-COPY --from=mwader/static-ffmpeg:6.1.1 /ffprobe /usr/local/bin
-COPY --from=build /app/bin ./bin
-COPY --from=build /app/src ./src
-COPY --from=build /app/Docker.sh .
-COPY --from=build /app/package.json .
-COPY --from=build /app/package-lock.json .
-RUN apk add --no-cache shadow su-exec && chmod +x Docker.sh && npm install --omit=dev
-EXPOSE 7883
-ENTRYPOINT ["/app/Docker.sh"]
-CMD ["node", "bin/cli.js", "server"]
+COPY --from=mwader/static-ffmpeg:8.1.2 /ffmpeg /usr/local/bin
+COPY --from=mwader/static-ffmpeg:8.1.2 /ffprobe /usr/local/bin
+COPY package.json package-lock.json ./
+RUN npm ci --omit=dev
+COPY bin/docker.js bin/docker.js
+COPY src/ src/
+USER node
+CMD ["node", "bin/docker.js"]

@@ -1,4 +1,15 @@
 export class MetadataStream {
+  /** @readonly @type {string | undefined} */
+  codec_name;
+  /** @readonly @type {string | undefined} */
+  codec_type;
+  /** @readonly @type {Record<string, number> | undefined} */
+  disposition;
+  /** @readonly @type {number | undefined} */
+  index;
+  /** @readonly @type {Record<string, string> | undefined} */
+  tags;
+
   /** @param {Partial<MetadataStream>} stream */
   constructor(stream) {
     this.codec_name = stream.codec_name;
@@ -7,15 +18,4 @@ export class MetadataStream {
     this.disposition = stream.disposition;
     this.tags = stream.tags;
   }
-
-  /** @readonly @type {string | undefined} */
-  codec_name;
-  /** @readonly @type {string | undefined} */
-  codec_type;
-  /** @readonly @type {number | undefined} */
-  index;
-  /** @readonly @type {Record<string, number> | undefined} */
-  disposition;
-  /** @readonly @type {Record<string, string> | undefined} */
-  tags;
 }

@@ -1,17 +1,21 @@
 name: npm
-on:
-  push:
-    tags: [v*]
 jobs:
-  push:
+  publish:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
         with:
-          node-version: 18
-          registry-url: "https://registry.npmjs.org"
+          node-version: 24
+          registry-url: https://registry.npmjs.org
       - run: npm ci
-      - run: npm publish
+      - run: npm version from-git --no-git-tag-version
+      - run: npm publish --access public --provenance
         env:
-          NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+    permissions:
+      id-token: write
+on:
+  push:
+    tags:
+      - v*

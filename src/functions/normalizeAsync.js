@@ -1,4 +1,5 @@
 import fs from "node:fs";
+
 import { normalize } from "./normalizer/normalize.js";
 
 /**
@@ -6,13 +7,13 @@ import { normalize } from "./normalizer/normalize.js";
  * @param {number} [size]
  */
 export async function normalizeAsync(fullPath, size) {
-  const oldValue = await fs.promises.readFile(fullPath, "utf-8");
+  const oldValue = await fs.promises.readFile(fullPath, "utf8");
   const newValue = normalize(oldValue, size);
-  if (newValue !== oldValue) {
+  if (newValue === oldValue) {
+    return false;
+  } else {
     await fs.promises.writeFile(`${fullPath}.tmp`, newValue);
     await fs.promises.rename(`${fullPath}.tmp`, fullPath);
     return true;
-  } else {
-    return false;
   }
 }

@@ -3,12 +3,19 @@ import { KeyValuePair } from "./KeyValuePair.js";
 import { TreePair } from "./TreePair.js";
 
 export class Tree {
-  /** @readonly @type {Array<Object>} */
+  /** @readonly @type {Array<TreePair>} */
+  events = [];
+  /** @readonly @type {Array<KeyValuePair>} */
+  info = [];
+  /** @readonly @type {Array<TreePair>} */
+  styles = [];
+
+  /** @type {KeyListPair | undefined} */
+  #format;
+  /** @readonly @type {Array<KeyListPair | KeyValuePair | string>} */
   #lines;
   /** @readonly @type {string} */
   #separator;
-  /** @type {KeyListPair | undefined} */
-  #format;
 
   /** @param {string} text */
   constructor(text) {
@@ -20,13 +27,6 @@ export class Tree {
   toString() {
     return this.#lines.join(this.#separator);
   }
-
-  /** @readonly @type {Array<KeyValuePair>} */
-  info = [];
-  /** @readonly @type {Array<TreePair>} */
-  styles = [];
-  /** @readonly @type {Array<TreePair>} */
-  events = [];
 
   /** @param {string[]} lines */
   #parse(lines) {
@@ -48,26 +48,22 @@ export class Tree {
         this.#format = undefined;
         mode = "Unknown";
         this.#lines.push(line);
-      } else if (mode === "Info") {
-        this.#parseInfo(line);
-      } else if (mode === "Styles") {
-        this.#parseStyle(line);
-      } else if (mode === "Events") {
-        this.#parseEvent(line);
       } else {
-        this.#lines.push(line);
+        switch (mode) {
+          case "Events":
+            this.#parseEvent(line);
+            break;
+          case "Info":
+            this.#parseInfo(line);
+            break;
+          case "Styles":
+            this.#parseStyle(line);
+            break;
+          default:
+            this.#lines.push(line);
+            break;
+        }
       }
-    }
-  }
-
-  /** @param {string} line */
-  #parseInfo(line) {
-    if (line.includes(":")) {
-      const info = new KeyValuePair(line);
-      this.info.push(info);
-      this.#lines.push(info);
-    } else {
-      this.#lines.push(line);
     }
   }
 
@@ -80,6 +76,17 @@ export class Tree {
       const event = new KeyListPair(line, this.#format.list.length);
       this.events.push(new TreePair(this.#format, event));
       this.#lines.push(event);
+    } else {
+      this.#lines.push(line);
+    }
+  }
+
+  /** @param {string} line */
+  #parseInfo(line) {
+    if (line.includes(":")) {
+      const info = new KeyValuePair(line);
+      this.info.push(info);
+      this.#lines.push(info);
     } else {
       this.#lines.push(line);
     }

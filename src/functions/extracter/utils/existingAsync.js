@@ -6,12 +6,12 @@ import path from "node:path";
  * @param {string} basePath
  */
 export async function existingAsync(baseName, basePath) {
-  const fullNames = await fs.promises.readdir(basePath);
+  const names = await fs.promises.readdir(basePath);
   const fullPaths = [];
-  for (const fullName of fullNames) {
-    if (!fullName.endsWith(".ass")) continue;
-    if (!fullName.startsWith(`${baseName}.`)) continue;
-    fullPaths.push(path.join(basePath, fullName));
+  for (const name of names) {
+    if (!name.endsWith(".ass")) continue;
+    if (!name.startsWith(`${baseName}.`)) continue;
+    fullPaths.push(path.join(basePath, name));
   }
   return fullPaths;
 }

@@ -2,9 +2,9 @@
   "version": "2.0.0",
   "tasks": [
     {
-      "command": "npm run tsc:watch",
+      "command": "npm run types:watch",
       "isBackground": true,
-      "label": "tsc:watch",
+      "label": "types:watch",
       "type": "shell",
       "problemMatcher": ["$tsc-watch"]
     }

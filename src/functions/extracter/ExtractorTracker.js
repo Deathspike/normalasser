@@ -15,15 +15,15 @@ export class ExtractorTracker {
   add(extension, stream) {
     const language = this.#get(stream);
     const languageId = this.#set(extension, language);
-    const languageSuffix = languageId ? `.${languageId}` : "";
+    const languageSuffix = languageId ? `.${languageId.toString()}` : "";
     return "." + language + languageSuffix + extension;
   }
 
   /** @param {MetadataStream} stream */
   #get(stream) {
     const language = getTag(stream, "language") ?? "";
-    const value = language.toLowerCase().replace(/[^a-z]/g, "");
-    const threeLetterCode = value.substring(0, 3);
+    const value = language.toLowerCase().replaceAll(/[^a-z]/g, "");
+    const threeLetterCode = value.slice(0, 3);
     return /^(mis|und|zxx)$/i.test(threeLetterCode) ? "" : threeLetterCode;
   }
 
@@ -46,6 +46,6 @@ export class ExtractorTracker {
 function getTag(stream, name) {
   if (!stream.tags) return;
   const entries = Object.entries(stream.tags);
-  const match = entries.find(([k]) => k.toLowerCase() === name);
+  const match = entries.find(([key]) => key.toLowerCase() === name);
   return match?.[1];
 }

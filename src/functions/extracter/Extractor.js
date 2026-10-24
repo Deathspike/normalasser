@@ -1,5 +1,6 @@
 import fs from "node:fs";
 import path from "node:path";
+
 import { existingAsync } from "./utils/existingAsync.js";
 import { ffmpegAsync } from "./utils/ffmpegAsync.js";
 
@@ -29,37 +30,37 @@ export class Extractor {
   /** @param {(fullPath: string) => Promise<void>} processAsync */
   async runAsync(processAsync) {
     try {
-      await fs.promises.rm(this.#outputPath, { recursive: true, force: true });
+      await fs.promises.rm(this.#outputPath, { force: true, recursive: true });
       await fs.promises.mkdir(this.#outputPath, { recursive: true });
       return await this.#execAsync(processAsync);
     } finally {
-      await fs.promises.rm(this.#outputPath, { recursive: true, force: true });
+      await fs.promises.rm(this.#outputPath, { force: true, recursive: true });
     }
   }
 
   /** @param {(fullPath: string) => Promise<void>} processAsync */
   async #execAsync(processAsync) {
     if (await ffmpegAsync(this.#args)) {
-      const newNames = await fs.promises.readdir(this.#outputPath);
-      const newPaths = newNames.map((x) => path.join(this.#outputPath, x));
-      await Promise.all(newPaths.map((x) => processAsync(x)));
-      await this.#moveAsync(newNames);
+      const names = await fs.promises.readdir(this.#outputPath);
+      const fullPaths = names.map((name) => path.join(this.#outputPath, name));
+      await Promise.all(fullPaths.map((fullPath) => processAsync(fullPath)));
+      await this.#moveAsync(names);
       return true;
     } else {
       return false;
     }
   }
 
-  /** @param {string[]} newNames */
-  async #moveAsync(newNames) {
-    for (const newName of newNames) {
-      const oldPath = path.join(this.#outputPath, newName);
-      const newPath = path.join(this.#basePath, newName);
+  /** @param {string[]} names */
+  async #moveAsync(names) {
+    for (const name of names) {
+      const oldPath = path.join(this.#outputPath, name);
+      const newPath = path.join(this.#basePath, name);
       await fs.promises.rename(oldPath, newPath);
     }
     for (const oldPath of await existingAsync(this.#baseName, this.#basePath)) {
       const name = path.basename(oldPath);
-      if (newNames.includes(name)) continue;
+      if (names.includes(name)) continue;
       await fs.promises.rm(oldPath);
     }
   }

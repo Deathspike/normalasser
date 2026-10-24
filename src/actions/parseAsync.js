@@ -1,14 +1,15 @@
 import fs from "node:fs";
 import path from "node:path";
+
 import * as normalasser from "../index.js";
 import { Options } from "./Options.js";
 
 /**
- * @param {string[]} paths
+ * @param {string[]} fullPaths
  * @param {Options} [options]
  */
-export async function parseAsync(paths, options) {
-  for (const fullPath of paths) {
+export async function parseAsync(fullPaths, options) {
+  for (const fullPath of fullPaths) {
     await checkAsync(fullPath, options);
   }
 }
@@ -60,7 +61,7 @@ async function directoryAsync(fullPath, options) {
  * @param {string} videoName
  * @param {string[]} otherNames
  */
-export function hasSubtitle(videoName, otherNames) {
+function hasSubtitle(videoName, otherNames) {
   const { name } = path.parse(videoName);
   return otherNames.some((otherName) => {
     const isSubtitle = otherName.endsWith(".ass");
@@ -79,7 +80,8 @@ async function traceAsync(fullPath, resultAsync) {
     const status = result ? "Finished" : "Skipping";
     console.log(`${status} ${fullPath}`);
   } catch (err) {
-    const status = err instanceof Error ? err.stack : err;
+    const stack = err instanceof Error ? err.stack : undefined;
+    const status = stack ?? String(err);
     console.log(`Rejected ${fullPath}: ${status}`);
   }
 }
