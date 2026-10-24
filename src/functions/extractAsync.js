@@ -4,21 +4,21 @@ import { ExtractorBuilder } from "./extracter/ExtractorBuilder.js";
 import { normalize } from "./normalizer/normalize.js";
 
 /**
- * @param {string} fullPath
+ * @param {string} filePath
  * @param {number} [size]
  */
-export async function extractAsync(fullPath, size) {
-  const builder = new ExtractorBuilder(fullPath);
+export async function extractAsync(filePath, size) {
+  const builder = new ExtractorBuilder(filePath);
   const extractor = await builder.buildAsync();
-  return await extractor.runAsync((fullPath) => processAsync(fullPath, size));
+  return await extractor.runAsync((filePath) => processAsync(filePath, size));
 }
 
 /**
- * @param {string} fullPath
+ * @param {string} filePath
  * @param {number} [size]
  */
-async function processAsync(fullPath, size) {
-  const oldValue = await fs.promises.readFile(fullPath, "utf8");
+async function processAsync(filePath, size) {
+  const oldValue = await fs.promises.readFile(filePath, "utf8");
   const newValue = normalize(oldValue, size);
-  if (newValue !== oldValue) await fs.promises.writeFile(fullPath, newValue);
+  if (newValue !== oldValue) await fs.promises.writeFile(filePath, newValue);
 }

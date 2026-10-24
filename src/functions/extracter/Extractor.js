@@ -27,7 +27,7 @@ export class Extractor {
     this.#outputPath = outputPath;
   }
 
-  /** @param {(fullPath: string) => Promise<void>} processAsync */
+  /** @param {(filePath: string) => Promise<void>} processAsync */
   async runAsync(processAsync) {
     try {
       await fs.promises.rm(this.#outputPath, { force: true, recursive: true });
@@ -38,12 +38,12 @@ export class Extractor {
     }
   }
 
-  /** @param {(fullPath: string) => Promise<void>} processAsync */
+  /** @param {(filePath: string) => Promise<void>} processAsync */
   async #execAsync(processAsync) {
     if (await ffmpegAsync(this.#args)) {
       const names = await fs.promises.readdir(this.#outputPath);
-      const fullPaths = names.map((name) => path.join(this.#outputPath, name));
-      await Promise.all(fullPaths.map((fullPath) => processAsync(fullPath)));
+      const filePaths = names.map((name) => path.join(this.#outputPath, name));
+      await Promise.all(filePaths.map((filePath) => processAsync(filePath)));
       await this.#moveAsync(names);
       return true;
     } else {
