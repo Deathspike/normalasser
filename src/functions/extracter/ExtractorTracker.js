@@ -1,11 +1,11 @@
 import { MetadataStream } from "./MetadataStream.js";
 
 export class ExtractorTracker {
-  /** @readonly @type {Record<string, Record<string, number>>} */
+  /** @readonly @type {Map<string, Map<string, number>>} */
   #values;
 
   constructor() {
-    this.#values = {};
+    this.#values = new Map();
   }
 
   /**
@@ -32,9 +32,11 @@ export class ExtractorTracker {
    * @param {string} language
    */
   #set(extension, language) {
-    const source = this.#values[extension] ?? (this.#values[extension] = {});
-    const value = (source[language] ?? -1) + 1;
-    source[language] = value;
+    /** @type {Map<string, number>} */
+    const source = this.#values.get(extension) ?? new Map();
+    this.#values.set(extension, source);
+    const value = (source.get(language) ?? -1) + 1;
+    source.set(language, value);
     return value;
   }
 }
