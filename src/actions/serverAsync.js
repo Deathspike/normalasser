@@ -60,9 +60,8 @@ async function serveAsync(options, request, response) {
       response.writeHead(404);
       response.end();
     }
-  } catch (error) {
-    console.error(error);
-    response.writeHead(500);
+  } catch {
+    response.writeHead(400);
     response.end();
   }
 }
