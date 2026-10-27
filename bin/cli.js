@@ -1,17 +1,14 @@
 #!/usr/bin/env node
-import path from "node:path";
-
 import { Options } from "../src/actions/Options.js";
 import { parseAsync } from "../src/actions/parseAsync.js";
-import { serverAsync } from "../src/actions/serverAsync.js";
 
 const args = process.argv.slice(2);
-const fullPaths = [];
 const options = new Options();
-let port;
+const paths = [];
 
 for (let index = 0; index < args.length; index++) {
   const parameter = args[index] || "";
+
   switch (parameter) {
     case "--check-ass":
       options.checkAss = true;
@@ -19,21 +16,19 @@ for (let index = 0; index < args.length; index++) {
     case "--force-mkv":
       options.forceMkv = true;
       break;
-    case "--port":
-      port = Number(args[++index]) || 0;
-      break;
     case "--size":
       options.size = Number(args[++index]) || undefined;
       break;
     default:
-      if (!path.isAbsolute(parameter)) break;
-      fullPaths.push(parameter);
+      paths.push(parameter);
       break;
   }
 }
 
-if (fullPaths.length) {
-  await parseAsync(fullPaths, options);
+if (paths.length) {
+  await parseAsync(paths, options);
 } else {
-  await serverAsync(options, port);
+  const descriptors = "[--check-ass] [--force-mkv] [--size <number>]";
+  console.log(`Usage: normalasser ${descriptors} <paths...>`);
+  process.exit(1);
 }
