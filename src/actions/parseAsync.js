@@ -19,7 +19,6 @@ export async function parseAsync(paths, options) {
  * @param {Options} [options]
  */
 async function checkAsync(path, options) {
-  const size = options?.size;
   const stats = await fs.promises.stat(path).catch(() => {});
   if (!stats) {
     console.log(`Rejected ${path}`);
@@ -29,10 +28,10 @@ async function checkAsync(path, options) {
     console.log(`Finished ${path}`);
   } else if (stats.isFile() && path.endsWith(".ass")) {
     console.log(`Fetching ${path}`);
-    await traceAsync(path, normalasser.normalizeAsync(path, size));
+    await traceAsync(path, normalasser.normalizeAsync(path, options?.size));
   } else if (stats.isFile() && path.endsWith(".mkv")) {
     console.log(`Fetching ${path}`);
-    await traceAsync(path, normalasser.extractAsync(path, size));
+    await traceAsync(path, normalasser.extractAsync(path, options?.size));
   }
 }
 
