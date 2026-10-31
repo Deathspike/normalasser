@@ -10,6 +10,7 @@ export function normalize(subtitle, size = 16) {
   const primary = getPrimaryStyle(tree);
   const primaryFontSize = primary?.getFloat("FontSize");
   const primaryMargin = primary?.getFloat("MarginV");
+  const primaryScaleY = primary?.getFloat("ScaleY") || 100;
   if (primaryFontSize) {
     const screen = tree.info.find((info) => info.key.is("PlayResY"));
     const screenValue = Number(screen?.value.text) || 270;
@@ -19,7 +20,7 @@ export function normalize(subtitle, size = 16) {
       const styleMargin = style.getFloat("MarginV");
       if (styleFontSize) {
         const fontScale = (1 / primaryFontSize) * styleFontSize;
-        const fontSize = size * screenScale * fontScale;
+        const fontSize = size * screenScale * fontScale * (100 / primaryScaleY);
         style.set("FontSize", fontSize.toString());
       }
       if (styleMargin && styleMargin === primaryMargin) {
