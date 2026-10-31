@@ -15,6 +15,7 @@ export function normalize(subtitle, size = 16) {
     const screen = tree.info.find((info) => info.key.is("PlayResY"));
     const screenValue = Number(screen?.value.text) || 270;
     const screenScale = screenValue / 360;
+    const marginV = screenValue / 20;
     for (const style of tree.styles) {
       const styleFontSize = style.getFloat("FontSize");
       const styleMargin = style.getFloat("MarginV");
@@ -24,8 +25,7 @@ export function normalize(subtitle, size = 16) {
         style.set("FontSize", fontSize.toString());
       }
       if (styleMargin && styleMargin === primaryMargin) {
-        const margin = 18 * screenScale;
-        style.set("MarginV", margin.toString());
+        style.set("MarginV", marginV.toString());
       }
     }
   }
