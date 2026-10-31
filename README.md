@@ -1,8 +1,8 @@
 # normalasser
 
-_Normalasser_ extracts ASS subtitles from MKV video files and normalizes their appearance to enhance readability and ensure consistency. Unlike the simpler SRT format, ASS subtitles include embedded styles that dictate font, color, and size, leaving no room for viewer preferences. _Normalasser_ selectively overrides these styles to ensure that subtitles maintain a consistent size across different series and sources, while preserving other stylistic elements such as font choice, color, and positioning. This approach not only improves viewer experience but also upholds the original artistic intent of the subtitles.
+A CLI tool that extracts [ASS subtitles](https://en.wikipedia.org/wiki/SubStation_Alpha) from [MKV video files](https://en.wikipedia.org/wiki/Matroska) and normalizes their appearance for more consistent, readable subtitles. ASS files embed choices such as font, color, size, and positioning, which can make subtitles vary significantly between series and sources. This tool normalizes the primary subtitle size while preserving the remaining styling and original presentation as much as possible.
 
-# Preview
+## Preview
 
 <table width="100%">
   <tr>
@@ -27,61 +27,99 @@ _Normalasser_ extracts ASS subtitles from MKV video files and normalizes their a
   </tr>
 </table>
 
-# Prerequisites
+## Prerequisites
 
-- [`node`](http://nodejs.org/) >= `20`
-- [`npm`](https://www.npmjs.org/) >= `10`
-- [`ffmpeg`](https://ffmpeg.org/) >= `6`
-- [`ffprobe`](https://ffmpeg.org/) >= `6`
+When not using docker, [ffmpeg](https://ffmpeg.org/) 8+ must be installed, with `ffmpeg` and `ffprobe` on `PATH`.
 
-# Install
+## Quick Start
 
+Run with **docker**:
+
+```bash
+docker run -p 7883:7883 -v /path/to/media:/path/to/media deathspike/normalasser
 ```
+
+Then submit a file or directory path:
+
+```bash
+curl -d '"/path/to/media"' http://localhost:7883/
+```
+
+Or run with **npm (using npx)**:
+
+```bash
+npx normalasser /path/to/file-or-directory
+```
+
+## Installation
+
+The Quick Start commands are for one-off runs to quickly try the tool, while the options below are intended for regular use. You can set up a persistent environment with Docker Compose, install the CLI globally with npm, or clone from source if you want full control or plan to contribute.
+
+### Docker Compose
+
+```yaml
+services:
+  normalasser:
+    image: deathspike/normalasser
+    container_name: normalasser
+    restart: always
+    ports:
+      - 7883:7883
+    volumes:
+      - /path/to/media:/path/to/media
+```
+
+### npm
+
+Install globally with **npm**:
+
+```bash
 npm install -g normalasser
 ```
 
-# Usage
+Then run:
 
-To use _Normalasser_ from the command line, simply run the tool followed by the absolute paths to the MKV files or directories containing MKV files. _Normalasser_ will recursively scan directories to find all MKV files to extract and normalize ASS subtitles according to your specifications.
-
-```
-normalasser /path/to/video.mkv
+```bash
+normalasser /path/to/file-or-directory
 ```
 
-You can also pass multiple paths:
+### From Source
 
-```
-normalasser /path/to/directory /path/to/video.mkv
-```
+Install from source with **git** and **npm**:
 
-Customize _Normalasser_'s behavior with the following options:
-
-- `--check-ass`: Normalize already extracted ASS subtitles.
-- `--force-mkv`: Extract and normalize even if external ASS subtitles already exist.
-- `--size <number>`: Set the size of the subtitles (defaults to `16`).
-
-Example with multiple options:
-
-```
-normalasser --check-ass --size 20 /path/to/directory
+```bash
+git clone https://github.com/Deathspike/normalasser
+cd normalasser
+npm install
 ```
 
-# Webserver
+Then run with **node**:
 
-If no absolute paths are specified when launching _Normalasser_, it operates as a webserver on port `7883`. This mode enables other applications to send POST requests with JSON payloads containing absolute paths to the MKV files or directories containing MKV files.
-
-```
-normalasser
+```bash
+node bin/cli.js /path/to/file-or-directory
 ```
 
-To send a request, use any HTTP client capable of sending POST requests with JSON:
+## Configuration
 
+You can configure this tool either with a CLI option when running through npm or from source, or with an environment variable when running in Docker. If no value is provided, the tool falls back to the default value shown in the table below.
+
+| CLI                   | Docker          | Default | Description                                                                                                                             |
+| --------------------- | --------------- | ------- | --------------------------------------------------------------------------------------------------------------------------------------- |
+| **`--check-ass`**     | **`CHECK_ASS`** | `false` | Normalize existing ASS subtitle files during directory scans, including those extracted by an earlier run.                              |
+| **`--force-mkv`**     | **`FORCE_MKV`** | `false` | Extract and normalize ASS subtitles from MKV video files during directory scans, even if matching external ASS subtitles already exist. |
+| **`--size <number>`** | **`SIZE`**      | `16`    | Base font size for the primary subtitle style. Other styles are scaled proportionally.                                                  |
+|                       | **`PORT`**      | `7883`  | The port the embedded HTTP server listens on.                                                                                           |
+
+For example:
+
+```bash
+normalasser --force-mkv /path/to/file-or-directory
 ```
-curl -X POST -d '{"path": "/path/to/video.mkv"}' http://127.0.0.1:7883
-```
 
-_Normalasser_ scans the entire JSON object, extracting absolute paths from any part of its structure, regardless of how it is formatted. This flexibility ensures that _Normalasser_ is compatible with a wide range of input sources and can be integrated with automation tools like _Sonarr_ and _Radarr_ that may send structured data in different formats.
+## Docker Server
 
-# Contributions
+The docker image runs an HTTP server for automation. Send any JSON payload in a `POST` request to the server, and the server will recursively queue every absolute path it finds. Because no fixed schema is required, it works with virtually any JSON webhook that includes an absolute path, including those from [Radarr](https://github.com/Radarr/Radarr) and [Sonarr](https://github.com/Sonarr/Sonarr/). Fields with names containing `Delete` or `Remove` are ignored. The server returns `204` for valid JSON, `400` for malformed JSON, and `404` for other HTTP methods. Queued paths are processed asynchronously, with progress reported in the container logs.
 
-We welcome contributions from the community! If you have suggestions for improvements, bug fixes, or new features, please feel free to submit a pull request or open an issue on our GitHub page. Your feedback and contributions make _Normalasser_ better for everyone.
+## Contributions
+
+Pull requests are welcome! Please open an issue first to discuss major changes.
