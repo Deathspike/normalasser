@@ -1,5 +1,5 @@
-FROM mwader/static-ffmpeg:8.1.2 AS ffmpeg
-FROM node:24.21.0-alpine
+FROM mwader/static-ffmpeg:9.0.2-1 AS ffmpeg
+FROM node:24.22.1-alpine
 WORKDIR /app
 COPY --from=ffmpeg /ffmpeg /usr/local/bin
 COPY --from=ffmpeg /ffprobe /usr/local/bin
