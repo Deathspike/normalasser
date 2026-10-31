@@ -14,12 +14,12 @@ export function normalize(subtitle, size = 16) {
   if (primaryFontSize) {
     const screen = tree.info.find((info) => info.key.is("PlayResY"));
     const screenValue = Number(screen?.value.text) || 270;
-    const screenScale = (1 / 360) * screenValue;
+    const screenScale = screenValue / 360;
     for (const style of tree.styles) {
       const styleFontSize = style.getFloat("FontSize");
       const styleMargin = style.getFloat("MarginV");
       if (styleFontSize) {
-        const fontScale = (1 / primaryFontSize) * styleFontSize;
+        const fontScale = styleFontSize / primaryFontSize;
         const fontSize = size * screenScale * fontScale * (100 / primaryScaleY);
         style.set("FontSize", fontSize.toString());
       }
