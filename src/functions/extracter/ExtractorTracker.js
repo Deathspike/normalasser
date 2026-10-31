@@ -15,8 +15,9 @@ export class ExtractorTracker {
   add(extension, stream) {
     const language = this.#get(stream);
     const languageId = this.#set(extension, language);
+    const languagePrefix = language ? `.${language}` : "";
     const languageSuffix = languageId ? `.${languageId.toString()}` : "";
-    return "." + language + languageSuffix + extension;
+    return languagePrefix + languageSuffix + extension;
   }
 
   /** @param {MetadataStream} stream */
