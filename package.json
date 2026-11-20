@@ -8,9 +8,9 @@
   },
   "devDependencies": {
     "@types/node": "24.19.2",
-    "eslint": "10.14.0",
+    "eslint": "10.15.0",
     "eslint-config-porcupine": "0.4.1",
-    "prettier": "3.9.10",
+    "prettier": "3.10.1",
     "prettier-plugin-jsdoc": "1.8.1",
     "typescript": "6.0.3"
   },
